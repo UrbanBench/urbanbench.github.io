@@ -424,14 +424,14 @@ function buildToolCard(turn) {
 
   // Arguments section (always visible)
   const argsSection = document.createElement('div');
-  argsSection.style.cssText = 'margin-bottom: 10px;';
+  argsSection.style.cssText = 'margin-bottom: 12px;';
   
   const argsLabel = document.createElement('div');
   argsLabel.style.cssText = `
     font-weight: 600;
     font-size: 11px;
     color: ${meta.color};
-    margin-bottom: 6px;
+    margin-bottom: 8px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
   `;
@@ -440,7 +440,7 @@ function buildToolCard(turn) {
 
   const argsPre = document.createElement('pre');
   argsPre.className = 'json-block';
-  argsPre.style.cssText = 'margin: 0; font-size: 11px; max-height: 200px;';
+  argsPre.style.cssText = 'margin: 0; font-size: 11px; max-height: none; overflow-y: visible; line-height: 1.6;';
   const argsStr = typeof turn.args === 'object' && turn.args !== null
     ? JSON.stringify(turn.args, null, 2)
     : String(turn.args ?? '{}');
@@ -451,14 +451,14 @@ function buildToolCard(turn) {
   // Result section with smart formatting
   if (turn.resultRaw !== null && turn.resultRaw !== '') {
     const resultSection = document.createElement('div');
-    resultSection.style.cssText = 'border-top: 1px solid ' + meta.border + '; padding-top: 8px;';
+    resultSection.style.cssText = 'border-top: 1px solid ' + meta.border + '; padding-top: 12px; margin-top: 4px;';
     
     const resultLabel = document.createElement('div');
     resultLabel.style.cssText = `
       font-weight: 600;
       font-size: 11px;
       color: ${meta.color};
-      margin-bottom: 6px;
+      margin-bottom: 8px;
       text-transform: uppercase;
       letter-spacing: 0.5px;
     `;
@@ -470,9 +470,9 @@ function buildToolCard(turn) {
     
     const resultDiv = document.createElement('div');
     if (turn.error) {
-      resultDiv.style.cssText = 'background: #fef2f2; border: 1px solid #fca5a5; border-radius: 4px; padding: 8px; color: #b91c1c; font-size: 11px;';
+      resultDiv.style.cssText = 'background: #fef2f2; border: 1px solid #fca5a5; border-radius: 4px; padding: 10px; color: #b91c1c; font-size: 11px; line-height: 1.6;';
     } else {
-      resultDiv.style.cssText = 'font-size: 11px;';
+      resultDiv.style.cssText = 'font-size: 11px; line-height: 1.6;';
     }
     resultDiv.innerHTML = formatted.html;
     resultSection.appendChild(resultDiv);

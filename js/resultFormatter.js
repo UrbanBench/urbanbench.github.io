@@ -99,7 +99,7 @@ function formatArrayAsTable(arr, toolName) {
   const rows = arr.slice(0, 12); // limit rows shown
 
   // Render table
-  const headerRow = keys.map(k => `<th style="text-align:left;padding:4px 8px;border-bottom:1px solid var(--border-light);font-weight:600;font-size:10px">${escapeHtml(String(k))}</th>`).join('');
+  const headerRow = keys.map(k => `<th style="text-align:left;padding:8px 10px;border-bottom:2px solid #e5e7eb;font-weight:700;font-size:10px;background:#f3f4f6;color:#4b5563;text-transform:uppercase;letter-spacing:0.04em">${escapeHtml(String(k))}</th>`).join('');
 
   const bodyRows = rows
     .map(item => {
@@ -107,7 +107,7 @@ function formatArrayAsTable(arr, toolName) {
         .map(k => {
           const val = item[k];
           let cellText = formatCellValue(val);
-          return `<td style="padding:6px 8px;border-bottom:1px solid var(--border-light);font-size:11px;color:var(--text-secondary)">${cellText}</td>`;
+          return `<td style="padding:8px 10px;border-bottom:1px solid #f3f4f6;font-size:11px;color:#374151;line-height:1.5;vertical-align:top">${cellText}</td>`;
         })
         .join('');
       return `<tr>${cells}</tr>`;
@@ -115,11 +115,11 @@ function formatArrayAsTable(arr, toolName) {
     .join('');
 
   const moreRows = arr.length > rows.length
-    ? `<tr><td colspan="${keys.length}" style="padding:8px;text-align:center;color:var(--text-muted);font-size:10px">… and ${arr.length - rows.length} more</td></tr>`
+    ? `<tr><td colspan="${keys.length}" style="padding:8px 10px;text-align:center;color:#9ca3af;font-size:10px;border-top:1px solid #f3f4f6">… and ${arr.length - rows.length} more</td></tr>`
     : '';
 
   const html = `
-    <table style="width:100%;border-collapse:collapse;font-size:11px;margin:4px 0">
+    <table style="width:100%;border-collapse:collapse;font-size:11px;margin:6px 0;background:white;border:1px solid #e5e7eb;border-radius:4px;overflow:hidden">
       <thead><tr>${headerRow}</tr></thead>
       <tbody>${bodyRows}${moreRows}</tbody>
     </table>
