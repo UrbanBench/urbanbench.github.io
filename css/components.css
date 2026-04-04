@@ -573,6 +573,27 @@
   gap: 8px;
 }
 
+/* Arguments and Result labels */
+.tool-body > div > div:first-child {
+  font-weight: 600;
+  font-size: 11px;
+  color: inherit;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Section divider */
+.tool-body > div + div {
+  border-top: 1px solid;
+  border-color: inherit;
+  margin-top: 8px;
+  padding-top: 8px;
+}
+
 /* Collapsible section: Arguments / Result */
 .collapsible-section {
   display: flex;

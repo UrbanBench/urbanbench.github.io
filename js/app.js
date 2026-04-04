@@ -399,12 +399,13 @@ function buildToolCard(turn) {
     background: ${meta.bg};
     border-color: ${meta.border};
     border-left: 4px solid ${meta.color};
+    margin: 12px 0;
   `;
 
   // ── Header ────────────────────────────────────────────────────────────────
   const header = document.createElement('div');
   header.className = 'tool-header';
-  header.style.cssText = `background: ${meta.bg}; border-bottom-color: ${meta.border};`;
+  header.style.cssText = `background: ${meta.bg}; border-bottom-color: ${meta.border}; padding: 10px 12px;`;
 
   header.innerHTML = `
     <span class="group-badge" style="color:${meta.color};background:${meta.bg};border-color:${meta.border}">
@@ -412,21 +413,70 @@ function buildToolCard(turn) {
     </span>
     <span class="tool-name">${escapeHtml(turn.toolName)}</span>
     ${turn.error ? '<span class="tool-error-badge">Error</span>' : ''}
+    <span style="color: var(--text-muted); font-size: 10px; margin-left: 8px;">ID: ${escapeHtml(turn.toolCallId).substring(0, 16)}...</span>
   `;
   card.appendChild(header);
 
   // ── Body ──────────────────────────────────────────────────────────────────
   const body = document.createElement('div');
   body.className = 'tool-body';
-  body.style.cssText = `background: ${meta.bg};`;
+  body.style.cssText = `background: ${meta.bg}; padding: 8px;`;
 
-  // Arguments section (always open by default)
-  body.appendChild(buildCollapsible('Arguments', turn.args, false, meta.color, null));
+  // Arguments section (always visible)
+  const argsSection = document.createElement('div');
+  argsSection.style.cssText = 'margin-bottom: 10px;';
+  
+  const argsLabel = document.createElement('div');
+  argsLabel.style.cssText = `
+    font-weight: 600;
+    font-size: 11px;
+    color: ${meta.color};
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  `;
+  argsLabel.textContent = '📥 Arguments';
+  argsSection.appendChild(argsLabel);
+
+  const argsPre = document.createElement('pre');
+  argsPre.className = 'json-block';
+  argsPre.style.cssText = 'margin: 0; font-size: 11px; max-height: 200px;';
+  const argsStr = typeof turn.args === 'object' && turn.args !== null
+    ? JSON.stringify(turn.args, null, 2)
+    : String(turn.args ?? '{}');
+  argsPre.innerHTML = syntaxHighlightJSON(escapeHtml(argsStr));
+  argsSection.appendChild(argsPre);
+  body.appendChild(argsSection);
 
   // Result section with smart formatting
-  if (turn.resultRaw !== null) {
+  if (turn.resultRaw !== null && turn.resultRaw !== '') {
+    const resultSection = document.createElement('div');
+    resultSection.style.cssText = 'border-top: 1px solid ' + meta.border + '; padding-top: 8px;';
+    
+    const resultLabel = document.createElement('div');
+    resultLabel.style.cssText = `
+      font-weight: 600;
+      font-size: 11px;
+      color: ${meta.color};
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    `;
+    resultLabel.textContent = '📤 Result';
+    resultSection.appendChild(resultLabel);
+
     const resultData = turn.result !== null ? turn.result : turn.resultRaw;
-    body.appendChild(buildCollapsible('Result', resultData, turn.error, meta.color, turn.toolName));
+    const formatted = formatToolResult(resultData, turn.toolName);
+    
+    const resultDiv = document.createElement('div');
+    if (turn.error) {
+      resultDiv.style.cssText = 'background: #fef2f2; border: 1px solid #fca5a5; border-radius: 4px; padding: 8px; color: #b91c1c; font-size: 11px;';
+    } else {
+      resultDiv.style.cssText = 'font-size: 11px;';
+    }
+    resultDiv.innerHTML = formatted.html;
+    resultSection.appendChild(resultDiv);
+    body.appendChild(resultSection);
   }
 
   card.appendChild(body);
