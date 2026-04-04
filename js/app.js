@@ -1,0 +1,617 @@
+// app.js — main application: state, rendering, event handling
+// Uses ES module imports; no build step needed.
+
+import { loadData, getTaskTypes } from './dataLoader.js';
+import { parseMessages } from './messageParser.js';
+import { getToolMeta, getAllGroups } from './toolClassifier.js';
+import { computeSimulationMetrics } from './benchmarkMetrics.js';
+import { formatToolResult } from './resultFormatter.js';
+
+// ── State ────────────────────────────────────────────────────────────────────
+const state = {
+  data: null,          // { meta, simulations, tasksMap }
+  filtered: [],        // filtered SimulationRecord[]
+  activeFilters: new Set(), // task type strings
+  selectedId: null,    // simulation UUID
+};
+
+// ── DOM refs ─────────────────────────────────────────────────────────────────
+const $ = id => document.getElementById(id);
+const els = {
+  loadingOverlay:     () => $('loading-overlay'),
+  errorOverlay:       () => $('error-overlay'),
+  errorMsg:           () => $('error-msg'),
+  filterChips:        () => $('filter-chips'),
+  simList:            () => $('simulation-list'),
+  simCount:           () => $('sim-count'),
+  welcomeScreen:      () => $('welcome-screen'),
+  conversationView:   () => $('conversation-view'),
+  taskInfoPanel:      () => $('task-info-panel'),
+  taskInfoBody:       () => $('task-info-body'),
+  taskInfoToggle:     () => $('task-info-toggle'),
+  taskInfoId:         () => $('task-info-id'),
+  threadContainer:    () => $('thread-container'),
+  fileInput:          () => $('file-input'),
+  headerMeta:         () => $('header-meta'),
+};
+
+// ── Boot ─────────────────────────────────────────────────────────────────────
+window.addEventListener('DOMContentLoaded', async () => {
+  // Wire events
+  $('upload-btn').addEventListener('click', () => els.fileInput().click());
+  els.fileInput().addEventListener('change', onFileChange);
+  $('task-info-header').addEventListener('click', toggleTaskInfoPanel);
+
+  // Try loading default sample data
+  try {
+    const response = await fetch('./data/sample.json');
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const json = await response.json();
+    initWithData(json);
+  } catch (err) {
+    // Sample not available — show empty state (user can upload)
+    console.info('No sample data loaded:', err.message);
+    hideOverlay();
+    showWelcome();
+  }
+});
+
+// ── Data init ─────────────────────────────────────────────────────────────────
+function initWithData(json) {
+  try {
+    state.data = loadData(json);
+    state.activeFilters.clear();
+    state.filtered = [...state.data.simulations];
+    state.selectedId = null;
+
+    updateHeaderMeta();
+    buildFilterChips();
+    renderSidebar();
+    hideOverlay();
+    showWelcome();
+  } catch (err) {
+    showError(`Failed to parse data: ${err.message}`);
+  }
+}
+
+// ── File upload ───────────────────────────────────────────────────────────────
+function onFileChange(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  showLoading();
+  const reader = new FileReader();
+  reader.onload = () => {
+    try {
+      const json = JSON.parse(reader.result);
+      initWithData(json);
+    } catch (err) {
+      showError(`Invalid JSON: ${err.message}`);
+    }
+  };
+  reader.readAsText(file);
+  // reset so same file can be re-opened
+  e.target.value = '';
+}
+
+// ── Header meta ───────────────────────────────────────────────────────────────
+function updateHeaderMeta() {
+  const { meta, simulations } = state.data;
+  const el = els.headerMeta();
+  if (!el) return;
+  el.innerHTML = `
+    <span class="header-meta-badge">🤖 Agent: ${escapeHtml(meta.llm_agent)}</span>
+    <span class="header-meta-badge">👤 User: ${escapeHtml(meta.llm_user)}</span>
+    <span class="header-meta-badge">${simulations.length} simulations</span>
+  `;
+}
+
+// ── Filter chips ──────────────────────────────────────────────────────────────
+function buildFilterChips() {
+  const container = els.filterChips();
+  const types = getTaskTypes(state.data.simulations);
+  container.innerHTML = '';
+
+  // "All" chip
+  const allChip = document.createElement('span');
+  allChip.className = 'filter-chip active';
+  allChip.dataset.type = 'all';
+  allChip.textContent = 'All';
+  allChip.addEventListener('click', () => {
+    state.activeFilters.clear();
+    updateFilterUI();
+    applyFilter();
+  });
+  container.appendChild(allChip);
+
+  // Per-type chips
+  for (const type of types) {
+    const chip = document.createElement('span');
+    chip.className = 'filter-chip';
+    chip.dataset.type = type;
+    chip.textContent = TYPE_LABELS[type] ?? type;
+    chip.addEventListener('click', () => {
+      if (state.activeFilters.has(type)) {
+        state.activeFilters.delete(type);
+      } else {
+        state.activeFilters.add(type);
+      }
+      updateFilterUI();
+      applyFilter();
+    });
+    container.appendChild(chip);
+  }
+}
+
+function updateFilterUI() {
+  const chips = els.filterChips().querySelectorAll('.filter-chip');
+  const allActive = state.activeFilters.size === 0;
+
+  chips.forEach(chip => {
+    if (chip.dataset.type === 'all') {
+      chip.classList.toggle('active', allActive);
+    } else {
+      chip.classList.toggle('active', state.activeFilters.has(chip.dataset.type));
+    }
+  });
+}
+
+function applyFilter() {
+  if (state.activeFilters.size === 0) {
+    state.filtered = [...state.data.simulations];
+  } else {
+    state.filtered = state.data.simulations.filter(s => state.activeFilters.has(s.taskType));
+  }
+  renderSidebar();
+}
+
+// ── Sidebar ───────────────────────────────────────────────────────────────────
+function renderSidebar() {
+  const list = els.simList();
+  const count = els.simCount();
+  if (count) count.textContent = `(${state.filtered.length})`;
+
+  if (state.filtered.length === 0) {
+    list.innerHTML = `
+      <div class="sidebar-empty">
+        <span class="icon">🔍</span>
+        <p>No simulations match the current filter.</p>
+      </div>`;
+    return;
+  }
+
+  list.innerHTML = '';
+  for (const sim of state.filtered) {
+    const item = buildSimItem(sim);
+    list.appendChild(item);
+  }
+}
+
+function buildSimItem(sim) {
+  const div = document.createElement('div');
+  div.className = 'sim-item' + (sim.id === state.selectedId ? ' active' : '');
+  div.dataset.id = sim.id;
+
+  const scoreClass = scoreToClass(sim.score);
+  const scoreTxt = sim.score !== null ? Math.round(sim.score * 100) + '%' : '–';
+  const dur = sim.duration > 0 ? `${sim.duration.toFixed(1)}s` : '';
+
+  div.innerHTML = `
+    <div class="sim-item-header">
+      <span class="task-type-badge" data-type="${sim.taskType}">${TYPE_LABELS[sim.taskType] ?? sim.taskType}</span>
+      <span class="sim-task-id" title="${escapeHtml(sim.task_id)}">${simpleTaskId(sim.task_id)}</span>
+    </div>
+    <div class="sim-item-meta">
+      <span class="score-chip ${scoreClass}">${scoreTxt}</span>
+      <span class="termination-badge ${sim.termination}">${TERM_LABELS[sim.termination] ?? sim.termination}</span>
+      <span class="sim-duration">${dur}</span>
+    </div>`;
+
+  div.addEventListener('click', () => selectSimulation(sim.id));
+  return div;
+}
+
+function simpleTaskId(taskId) {
+  // "urban_map_web_discovery_01" → "discovery_01"
+  return taskId.replace(/^urban_map_web_/, '');
+}
+
+// ── Select & render simulation ────────────────────────────────────────────────
+function selectSimulation(id) {
+  state.selectedId = id;
+
+  // Update sidebar active state
+  els.simList().querySelectorAll('.sim-item').forEach(el => {
+    el.classList.toggle('active', el.dataset.id === id);
+  });
+
+  const sim = state.data.simulations.find(s => s.id === id);
+  if (!sim) return;
+
+  hideWelcome();
+  renderTaskInfoPanel(sim);
+  renderConversation(sim);
+  showConversationView();
+}
+
+// ── Task info panel ───────────────────────────────────────────────────────────
+let taskInfoExpanded = true;
+
+function toggleTaskInfoPanel() {
+  taskInfoExpanded = !taskInfoExpanded;
+  const body = els.taskInfoBody();
+  const toggle = els.taskInfoToggle();
+  body.classList.toggle('hidden', !taskInfoExpanded);
+  toggle.classList.toggle('open', taskInfoExpanded);
+  toggle.textContent = taskInfoExpanded ? '▲' : '▼';
+}
+
+function renderTaskInfoPanel(sim) {
+  const panel = els.taskInfoPanel();
+  const idEl = els.taskInfoId();
+  if (idEl) idEl.textContent = sim.task_id;
+
+  const toggle = els.taskInfoToggle();
+  if (toggle) {
+    taskInfoExpanded = true;
+    toggle.textContent = '▲';
+    toggle.classList.add('open');
+  }
+
+  const body = els.taskInfoBody();
+  if (!body) return;
+  body.classList.remove('hidden');
+
+  const task = sim.taskMeta;
+  const reward = sim.reward ?? {};
+
+  // Description / persona
+  const purpose = task?.description?.purpose ?? '–';
+  const persona = task?.user_scenario?.instructions?.task_instructions ?? 
+                  task?.user_scenario?.persona ?? '–';
+
+  // Compute metrics using benchmark logic
+  const { actionScore, nlAccuracy } = computeSimulationMetrics(sim, task);
+
+  // NL assertions for detailed view
+  const nlActual = reward.nl_assertions ?? [];
+
+  // Cost
+  const totalCost = sim.agentCost + sim.userCost;
+
+  // Format the scores
+  const actionScoreStr = actionScore !== null ? `${(actionScore * 100).toFixed(1)}%` : '–';
+  const nlAccuracyStr = nlAccuracy !== null ? `${(nlAccuracy * 100).toFixed(1)}%` : '–';
+  const actionScoreClass = actionScore !== null && actionScore >= 0.9 ? 'score-pass' : actionScore !== null && actionScore >= 0.5 ? 'score-partial' : 'score-fail';
+  const nlAccuracyClass = nlAccuracy !== null && nlAccuracy >= 0.9 ? 'score-pass' : nlAccuracy !== null && nlAccuracy >= 0.5 ? 'score-partial' : 'score-fail';
+
+  body.innerHTML = `
+    <div class="task-info-section" style="grid-column: span 2">
+      <h4>📋 Purpose</h4>
+      <p>${escapeHtml(purpose)}</p>
+    </div>
+
+    <div class="task-info-section">
+      <h4>🎭 Persona</h4>
+      <p>${escapeHtml(truncate(persona, 220))}</p>
+    </div>
+
+    <div class="task-info-section">
+      <h4>📊 Metrics</h4>
+      <table class="reward-table" style="width:100%">
+        <thead><tr><th>Metric</th><th>Score</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Action Accuracy</strong></td>
+            <td class="${actionScoreClass}">${actionScoreStr}</td>
+          </tr>
+          <tr>
+            <td><strong>NL Assertions</strong></td>
+            <td class="${nlAccuracyClass}">${nlAccuracyStr}</td>
+          </tr>
+          ${totalCost > 0 ? `<tr style="border-top:1px solid var(--border-light)"><td>📍 Cost</td><td style="color:var(--text-secondary)">$${totalCost.toFixed(4)}</td></tr>` : ''}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="task-info-section">
+      <h4>⏱ Execution</h4>
+      <div style="font-size:11px;color:var(--text-secondary)">
+        <div style="margin-bottom:4px"><strong>Duration:</strong> ${sim.duration.toFixed(2)}s</div>
+        <div style="margin-bottom:4px"><strong>Termination:</strong> <span style="text-transform:uppercase;font-size:9px;font-weight:700">${escapeHtml(sim.termination)}</span></div>
+        <div><strong>Seed:</strong> ${escapeHtml(String(sim.seed ?? '–'))}</div>
+      </div>
+    </div>
+
+    <div class="task-info-section" style="grid-column: span 2">
+      <h4>💬 Assertion Outcomes (${nlActual.length})</h4>
+      <div style="font-size:11px">${renderNLAssertions([], nlActual)}</div>
+    </div>
+  `;
+}
+
+function renderNLAssertions(expected, actual) {
+  if (expected.length === 0 && actual.length === 0)
+    return '<span style="color:var(--text-muted);font-size:11px">–</span>';
+
+  // actual may have the assertions with met/justification
+  const source = actual.length > 0 ? actual : expected;
+  return source.map(item => {
+    const met = typeof item.met === 'boolean' ? item.met : null;
+    const dotClass = met === true ? 'pass' : met === false ? 'fail' : 'unknown';
+    const text = escapeHtml(item.nl_assertion ?? String(item));
+    return `<div class="nl-assertion">
+      <span class="dot ${dotClass}"></span>
+      <span>${text}</span>
+    </div>`;
+  }).join('');
+}
+
+// ── Conversation rendering ────────────────────────────────────────────────────
+function renderConversation(sim) {
+  const container = els.threadContainer();
+  container.innerHTML = '';
+
+  const turns = parseMessages(sim.messages);
+
+  for (const turn of turns) {
+    container.appendChild(buildTurnEl(turn));
+  }
+
+  // Scroll to top
+  container.scrollTop = 0;
+}
+
+function buildTurnEl(turn) {
+  if (turn.type === 'user_text')  return buildTextBubble(turn, 'user');
+  if (turn.type === 'agent_text') return buildTextBubble(turn, 'agent');
+  if (turn.type === 'tool_call')  return buildToolCard(turn);
+
+  // Fallback for system messages or unknowns
+  const div = document.createElement('div');
+  div.style.cssText = 'font-size:11px;color:var(--text-muted);padding:4px 20px;font-style:italic';
+  div.textContent = `[${turn.type}] ${String(turn.content ?? '').substring(0, 120)}`;
+  return div;
+}
+
+function buildTextBubble(turn, who) {
+  const row = document.createElement('div');
+  row.className = `msg-row ${who}`;
+
+  const avatar = document.createElement('div');
+  avatar.className = 'msg-avatar';
+  avatar.textContent = who === 'user' ? '👤' : '🤖';
+
+  const bubble = document.createElement('div');
+  bubble.className = 'msg-bubble';
+  bubble.innerHTML = renderMarkdownLite(turn.content);
+
+  row.appendChild(avatar);
+  row.appendChild(bubble);
+  return row;
+}
+
+function buildToolCard(turn) {
+  const meta = getToolMeta(turn.toolName);
+
+  const card = document.createElement('div');
+  card.className = 'tool-call-card';
+  card.style.cssText = `
+    background: ${meta.bg};
+    border-color: ${meta.border};
+    border-left: 4px solid ${meta.color};
+  `;
+
+  // ── Header ────────────────────────────────────────────────────────────────
+  const header = document.createElement('div');
+  header.className = 'tool-header';
+  header.style.cssText = `background: ${meta.bg}; border-bottom-color: ${meta.border};`;
+
+  header.innerHTML = `
+    <span class="group-badge" style="color:${meta.color};background:${meta.bg};border-color:${meta.border}">
+      ${meta.icon} ${escapeHtml(meta.group)}
+    </span>
+    <span class="tool-name">${escapeHtml(turn.toolName)}</span>
+    ${turn.error ? '<span class="tool-error-badge">Error</span>' : ''}
+  `;
+  card.appendChild(header);
+
+  // ── Body ──────────────────────────────────────────────────────────────────
+  const body = document.createElement('div');
+  body.className = 'tool-body';
+  body.style.cssText = `background: ${meta.bg};`;
+
+  // Arguments section (always open by default)
+  body.appendChild(buildCollapsible('Arguments', turn.args, false, meta.color, null));
+
+  // Result section with smart formatting
+  if (turn.resultRaw !== null) {
+    const resultData = turn.result !== null ? turn.result : turn.resultRaw;
+    body.appendChild(buildCollapsible('Result', resultData, turn.error, meta.color, turn.toolName));
+  }
+
+  card.appendChild(body);
+  return card;
+}
+
+function buildCollapsible(label, data, isError, accentColor, toolName) {
+  const section = document.createElement('div');
+  section.className = 'collapsible-section';
+
+  const trigger = document.createElement('div');
+  trigger.className = 'collapsible-trigger';
+
+  const arrow = document.createElement('span');
+  arrow.className = 'collapsible-arrow open';
+  arrow.textContent = '▶';
+  arrow.style.color = accentColor;
+
+  trigger.appendChild(arrow);
+  trigger.insertAdjacentHTML('beforeend',
+    `<span style="color:${accentColor}">${escapeHtml(label)}</span>`
+  );
+  section.appendChild(trigger);
+
+  const content = document.createElement('div');
+  content.className = 'collapsible-content open';
+
+  // For Result sections, use smart formatting
+  if (label === 'Result' && toolName) {
+    const formatted = formatToolResult(data, toolName);
+    if (formatted.type === 'table' || formatted.type === 'object' || formatted.type === 'text-collapsible' || formatted.type === 'text' || formatted.type === 'list') {
+      // Use formatted HTML directly
+      const div = document.createElement('div');
+      div.style.cssText = isError ? 'background:#fef2f2;border:1px solid #fca5a5;border-radius:4px;padding:8px;color:#b91c1c' : '';
+      div.innerHTML = formatted.html;
+      content.appendChild(div);
+    } else {
+      // Fallback to JSON display
+      const pre = document.createElement('pre');
+      pre.className = 'json-block' + (isError ? ' error' : '');
+      const jsonStr = typeof data === 'object' && data !== null
+        ? JSON.stringify(data, null, 2)
+        : String(data ?? '');
+      pre.innerHTML = syntaxHighlightJSON(escapeHtml(jsonStr));
+      content.appendChild(pre);
+    }
+  } else {
+    // For Arguments, always show JSON
+    const pre = document.createElement('pre');
+    pre.className = 'json-block' + (isError ? ' error' : '');
+    const jsonStr = typeof data === 'object' && data !== null
+      ? JSON.stringify(data, null, 2)
+      : String(data ?? '');
+    pre.innerHTML = syntaxHighlightJSON(escapeHtml(jsonStr));
+    content.appendChild(pre);
+  }
+
+  section.appendChild(content);
+
+  trigger.addEventListener('click', () => {
+    const open = content.classList.toggle('open');
+    arrow.classList.toggle('open', open);
+  });
+
+  return section;
+}
+
+// ── JSON syntax highlight ─────────────────────────────────────────────────────
+function syntaxHighlightJSON(str) {
+  // Escape HTML first
+  str = escapeHtml(str);
+  // Colour keys, strings, numbers, booleans, null
+  return str.replace(
+    /("(\\u[\da-fA-F]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g,
+    match => {
+      let cls = 'jn'; // number
+      if (/^"/.test(match)) {
+        cls = /:$/.test(match) ? 'jk' : 'js'; // key vs string
+      } else if (/true|false/.test(match)) {
+        cls = 'jb';
+      } else if (/null/.test(match)) {
+        cls = 'jnl';
+      }
+      return `<span class="${cls}">${match}</span>`;
+    }
+  );
+}
+
+// ── Markdown-lite renderer ────────────────────────────────────────────────────
+function renderMarkdownLite(text) {
+  if (!text) return '';
+  let html = escapeHtml(text);
+
+  // Bold
+  html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+  // Italic
+  html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
+  // Inline code
+  html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
+  // Bullet list items
+  html = html.replace(/^- (.+)$/gm, '<li>$1</li>');
+  html = html.replace(/(<li>.*<\/li>)/s, '<ul>$1</ul>');
+  // Numbered list
+  html = html.replace(/^\d+\.\s+(.+)$/gm, '<li>$1</li>');
+  // Paragraph split on blank lines
+  html = html
+    .split(/\n{2,}/)
+    .map(block => block.trim() ? `<p>${block.replace(/\n/g, '<br>')}</p>` : '')
+    .join('');
+
+  return html || escapeHtml(text);
+}
+
+// ── UI state helpers ──────────────────────────────────────────────────────────
+function showLoading() {
+  els.loadingOverlay()?.classList.remove('hidden');
+  els.errorOverlay()?.classList.add('hidden');
+}
+
+function hideOverlay() {
+  els.loadingOverlay()?.classList.add('hidden');
+  els.errorOverlay()?.classList.add('hidden');
+}
+
+function showError(msg) {
+  const err = els.errorOverlay();
+  if (err) {
+    const msgEl = els.errorMsg();
+    if (msgEl) msgEl.textContent = msg;
+    err.classList.remove('hidden');
+  }
+  els.loadingOverlay()?.classList.add('hidden');
+}
+
+function showWelcome() {
+  els.welcomeScreen()?.classList.remove('hidden');
+  els.conversationView()?.classList.add('hidden');
+}
+
+function hideWelcome() {
+  els.welcomeScreen()?.classList.add('hidden');
+}
+
+function showConversationView() {
+  els.conversationView()?.classList.remove('hidden');
+}
+
+// ── Small utilities ───────────────────────────────────────────────────────────
+function escapeHtml(str) {
+  return String(str ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function truncate(str, max) {
+  if (!str || str.length <= max) return str ?? '';
+  return str.substring(0, max) + '…';
+}
+
+function scoreToClass(score) {
+  if (score === null || score === undefined) return 'unknown';
+  if (score >= 0.99) return 'pass';
+  if (score >= 0.5)  return 'partial';
+  return 'fail';
+}
+
+// ── Constants ─────────────────────────────────────────────────────────────────
+const TYPE_LABELS = {
+  discovery:      'Discovery',
+  booking:        'Booking',
+  en_route:       'En Route',
+  civic:          'Civic',
+  transit:        'Transit',
+  event_transit:  'Event+Transit',
+  spatial_filter: 'Spatial',
+  itinerary:      'Itinerary',
+  other:          'Other',
+};
+
+const TERM_LABELS = {
+  user_stop:   '✓ Done',
+  max_steps:   '⏱ MaxSteps',
+  max_errors:  '❌ MaxErrors',
+  unknown:     '?',
+};

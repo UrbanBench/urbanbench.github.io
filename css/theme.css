@@ -1,0 +1,211 @@
+/* theme.css — CSS custom properties, global reset, header */
+
+/* ── Colour palette ──────────────────────────────────────────────────────── */
+:root {
+  /* Brand */
+  --color-brand-dark:   #0f172a;
+  --color-brand:        #1e3a5f;
+  --color-brand-light:  #1d4ed8;
+
+  /* Urban map accent */
+  --color-accent:       #f59e0b;       /* amber — city-light */
+
+  /* Tool groups */
+  --color-map:          #2563eb;
+  --color-map-bg:       #eff6ff;
+  --color-map-border:   #93c5fd;
+
+  --color-web:          #059669;
+  --color-web-bg:       #ecfdf5;
+  --color-web-border:   #6ee7b7;
+
+  --color-db:           #7c3aed;
+  --color-db-bg:        #f5f3ff;
+  --color-db-border:    #c4b5fd;
+
+  --color-generic:      #d97706;
+  --color-generic-bg:   #fffbeb;
+  --color-generic-border:#fcd34d;
+
+  /* Task types */
+  --color-type-discovery:     #0ea5e9;
+  --color-type-booking:       #8b5cf6;
+  --color-type-en_route:      #10b981;
+  --color-type-civic:         #ef4444;
+  --color-type-transit:       #f59e0b;
+  --color-type-event_transit: #ec4899;
+  --color-type-spatial_filter:#06b6d4;
+  --color-type-itinerary:     #84cc16;
+  --color-type-other:         #6b7280;
+
+  /* Surfaces */
+  --surface-0:    #ffffff;
+  --surface-1:    #f8fafc;
+  --surface-2:    #f1f5f9;
+  --surface-3:    #e2e8f0;
+
+  /* Text */
+  --text-primary:   #0f172a;
+  --text-secondary: #475569;
+  --text-muted:     #94a3b8;
+
+  /* Borders */
+  --border-light:   #e2e8f0;
+  --border-medium:  #cbd5e1;
+
+  /* Shadows */
+  --shadow-sm:  0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md:  0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg:  0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+
+  /* Geometry */
+  --radius-sm:   4px;
+  --radius-md:   8px;
+  --radius-lg:   12px;
+  --radius-full: 9999px;
+
+  /* Layout */
+  --sidebar-width: 320px;
+  --header-height: 64px;
+}
+
+/* ── Reset ───────────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-primary);
+  background: var(--surface-1);
+}
+
+a { color: var(--color-brand-light); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+button { cursor: pointer; font-family: inherit; }
+input, textarea { font-family: inherit; }
+pre, code { font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace; }
+
+/* ── Scrollbars ──────────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border-medium); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+/* ── Header ──────────────────────────────────────────────────────────────── */
+#app-header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: var(--header-height);
+  background: var(--color-brand-dark);
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  gap: 16px;
+  z-index: 100;
+  /* subtle city-grid SVG pattern */
+  background-image:
+    linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px),
+    linear-gradient(var(--color-brand-dark), var(--color-brand-dark));
+  background-size: 40px 40px, 40px 40px, 100% 100%;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 0.4);
+}
+
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+
+.header-logo-icon {
+  width: 36px;
+  height: 36px;
+  background: var(--color-accent);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.header-title {
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.header-subtitle {
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.header-spacer { flex: 1; }
+
+.header-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.header-meta-badge {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: var(--radius-full);
+  padding: 2px 10px;
+  color: #e2e8f0;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+/* ── Layout body (below header) ──────────────────────────────────────────── */
+#app-body {
+  display: flex;
+  position: fixed;
+  top: var(--header-height);
+  left: 0; right: 0; bottom: 0;
+}
+
+/* ── Loading / Error overlay ─────────────────────────────────────────────── */
+#loading-overlay,
+#error-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--surface-0);
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+#loading-overlay .spinner {
+  width: 40px; height: 40px;
+  border: 3px solid var(--border-medium);
+  border-top-color: var(--color-brand-light);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+#loading-overlay p { color: var(--text-secondary); font-size: 13px; }
+#error-overlay p { color: #ef4444; font-size: 13px; max-width: 500px; text-align: center; }
+
+/* ── Utility classes ─────────────────────────────────────────────────────── */
+.hidden { display: none !important; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+
+.score-pass { color: #16a34a; font-weight: 600; }
+.score-fail { color: #dc2626; font-weight: 600; }
+.score-partial { color: #d97706; font-weight: 600; }
