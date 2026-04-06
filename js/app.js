@@ -42,19 +42,71 @@ window.addEventListener('DOMContentLoaded', async () => {
   els.fileInput().addEventListener('change', onFileChange);
   $('task-info-header').addEventListener('click', toggleTaskInfoPanel);
 
-  // Try loading default sample data
+  // Try loading dynamic model options
+  const urlParams = new URLSearchParams(window.location.search);
+  const modelParam = urlParams.get('model');
+  const modelSelect = $('model-selector');
+  let currentModel = modelParam;
+
   try {
-    const response = await fetch('./data/sample.json');
+    const res = await fetch('./data/leaderboard/leaderboard.json');
+    if (res.ok) {
+      const lbData = await res.json();
+      const models = lbData['urban_map_web'] || [];
+      if (modelSelect && models.length > 0) {
+        modelSelect.innerHTML = '';
+        models.forEach(m => {
+          const val = m.filename.replace('.json', '');
+          const opt = document.createElement('option');
+          opt.value = val;
+          opt.textContent = m.model_name;
+          modelSelect.appendChild(opt);
+        });
+        if (!currentModel || !models.some(m => m.filename.replace('.json', '') === currentModel)) {
+          currentModel = models[0].filename.replace('.json', '');
+        }
+      }
+    }
+  } catch (err) {
+    console.warn('Could not load dynamic models list fallback to default.', err);
+  }
+
+  if (!currentModel) currentModel = 'gpt-4.1-mini';
+
+  if (modelSelect) {
+    modelSelect.value = currentModel;
+    modelSelect.addEventListener('change', (e) => {
+      const newUrl = new URL(window.location);
+      newUrl.searchParams.set('model', e.target.value);
+      window.history.pushState({}, '', newUrl);
+      loadModelData(e.target.value);
+    });
+  }
+
+  loadModelData(currentModel);
+});
+
+async function loadModelData(modelName) {
+  showLoading();
+  try {
+    const response = await fetch(`./data/urban_map_web/${modelName}.json`);
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     const json = await response.json();
     initWithData(json);
   } catch (err) {
-    // Sample not available — show empty state (user can upload)
-    console.info('No sample data loaded:', err.message);
-    hideOverlay();
-    showWelcome();
+    // try fallback sample.json if fetching model failed, useful if running locally without data
+    try {
+      const resp2 = await fetch('./data/sample.json');
+      if (!resp2.ok) throw new Error();
+      const json2 = await resp2.json();
+      initWithData(json2);
+    } catch {
+      console.info(`No data for model ${modelName}:`, err.message);
+      hideOverlay();
+      showWelcome();
+    }
   }
-});
+}
 
 // ── Data init ─────────────────────────────────────────────────────────────────
 function initWithData(json) {
@@ -191,8 +243,9 @@ function buildSimItem(sim) {
   div.className = 'sim-item' + (sim.id === state.selectedId ? ' active' : '');
   div.dataset.id = sim.id;
 
-  const scoreClass = scoreToClass(sim.score);
-  const scoreTxt = sim.score !== null ? Math.round(sim.score * 100) + '%' : '–';
+  const isPass = sim.reward?.reward === 1.0;
+  const scoreClass = isPass ? 'score-pass' : 'score-fail';
+  const scoreTxt = isPass ? 'Pass' : 'Failed';
   const dur = sim.duration > 0 ? `${sim.duration.toFixed(1)}s` : '';
 
   div.innerHTML = `
@@ -202,7 +255,6 @@ function buildSimItem(sim) {
     </div>
     <div class="sim-item-meta">
       <span class="score-chip ${scoreClass}">${scoreTxt}</span>
-      <span class="termination-badge ${sim.termination}">${TERM_LABELS[sim.termination] ?? sim.termination}</span>
       <span class="sim-duration">${dur}</span>
     </div>`;
 
@@ -268,12 +320,11 @@ function renderTaskInfoPanel(sim) {
   const purpose = task?.description?.purpose ?? '–';
   const persona = task?.user_scenario?.instructions?.task_instructions ?? 
                   task?.user_scenario?.persona ?? '–';
+  const reasonForCall = task?.user_scenario?.instructions?.reason_for_call ?? '–';
+  const formattedReason = escapeHtml(reasonForCall).replace(/\. /g, '.<br/><br/>').replace(/\n/g, '<br/>');
 
   // Compute metrics using benchmark logic
-  const { actionScore, nlAccuracy } = computeSimulationMetrics(sim, task);
-
-  // NL assertions for detailed view
-  const nlActual = reward.nl_assertions ?? [];
+  const { actionScore, nlAccuracy, actionResults, nlResults } = computeSimulationMetrics(sim, task);
 
   // Cost
   const totalCost = sim.agentCost + sim.userCost;
@@ -281,8 +332,6 @@ function renderTaskInfoPanel(sim) {
   // Format the scores
   const actionScoreStr = actionScore !== null ? `${(actionScore * 100).toFixed(1)}%` : '–';
   const nlAccuracyStr = nlAccuracy !== null ? `${(nlAccuracy * 100).toFixed(1)}%` : '–';
-  const actionScoreClass = actionScore !== null && actionScore >= 0.9 ? 'score-pass' : actionScore !== null && actionScore >= 0.5 ? 'score-partial' : 'score-fail';
-  const nlAccuracyClass = nlAccuracy !== null && nlAccuracy >= 0.9 ? 'score-pass' : nlAccuracy !== null && nlAccuracy >= 0.5 ? 'score-partial' : 'score-fail';
 
   body.innerHTML = `
     <div class="task-info-section" style="grid-column: span 2">
@@ -290,27 +339,14 @@ function renderTaskInfoPanel(sim) {
       <p>${escapeHtml(purpose)}</p>
     </div>
 
-    <div class="task-info-section">
+    <div class="task-info-section" style="grid-column: span 2">
       <h4>🎭 Persona</h4>
-      <p>${escapeHtml(truncate(persona, 220))}</p>
+      <p>${escapeHtml(persona)}</p>
     </div>
 
-    <div class="task-info-section">
-      <h4>📊 Metrics</h4>
-      <table class="reward-table" style="width:100%">
-        <thead><tr><th>Metric</th><th>Score</th></tr></thead>
-        <tbody>
-          <tr>
-            <td><strong>Action Accuracy</strong></td>
-            <td class="${actionScoreClass}">${actionScoreStr}</td>
-          </tr>
-          <tr>
-            <td><strong>NL Assertions</strong></td>
-            <td class="${nlAccuracyClass}">${nlAccuracyStr}</td>
-          </tr>
-          ${totalCost > 0 ? `<tr style="border-top:1px solid var(--border-light)"><td>📍 Cost</td><td style="color:var(--text-secondary)">$${totalCost.toFixed(4)}</td></tr>` : ''}
-        </tbody>
-      </table>
+    <div class="task-info-section" style="grid-column: span 2">
+      <h4>📝 Instruction</h4>
+      <p>${formattedReason}</p>
     </div>
 
     <div class="task-info-section">
@@ -318,30 +354,56 @@ function renderTaskInfoPanel(sim) {
       <div style="font-size:11px;color:var(--text-secondary)">
         <div style="margin-bottom:4px"><strong>Duration:</strong> ${sim.duration.toFixed(2)}s</div>
         <div style="margin-bottom:4px"><strong>Termination:</strong> <span style="text-transform:uppercase;font-size:9px;font-weight:700">${escapeHtml(sim.termination)}</span></div>
-        <div><strong>Seed:</strong> ${escapeHtml(String(sim.seed ?? '–'))}</div>
+        <div style="margin-bottom:4px"><strong>Seed:</strong> ${escapeHtml(String(sim.seed ?? '–'))}</div>
+        ${totalCost > 0 ? `<div><strong>Cost:</strong> <span style="color:var(--text-secondary)">$${totalCost.toFixed(4)}</span></div>` : ''}
       </div>
     </div>
 
     <div class="task-info-section" style="grid-column: span 2">
-      <h4>💬 Assertion Outcomes (${nlActual.length})</h4>
-      <div style="font-size:11px">${renderNLAssertions([], nlActual)}</div>
+      <h4>🎯 PROCESS-BASED ACCURACY (${actionScoreStr})</h4>
+      <div class="action-steps-list">
+        ${renderActionResults(actionResults)}
+      </div>
+    </div>
+
+    <div class="task-info-section" style="grid-column: span 2">
+      <h4>💬 OUTCOME-BASED ACCURACY (${nlAccuracyStr})</h4>
+      <div class="action-steps-list" style="gap: 8px;">
+        ${renderNLResults(nlResults)}
+      </div>
     </div>
   `;
 }
 
-function renderNLAssertions(expected, actual) {
-  if (expected.length === 0 && actual.length === 0)
-    return '<span style="color:var(--text-muted);font-size:11px">–</span>';
-
-  // actual may have the assertions with met/justification
-  const source = actual.length > 0 ? actual : expected;
-  return source.map(item => {
-    const met = typeof item.met === 'boolean' ? item.met : null;
-    const dotClass = met === true ? 'pass' : met === false ? 'fail' : 'unknown';
-    const text = escapeHtml(item.nl_assertion ?? String(item));
-    return `<div class="nl-assertion">
-      <span class="dot ${dotClass}"></span>
+function renderActionResults(actionResults) {
+  if (!actionResults || actionResults.length === 0) return '<span style="color:var(--text-muted);font-size:11px">–</span>';
+  return actionResults.map(item => {
+    const met = item.met;
+    const icon = met ? '✓' : '✗';
+    const iconClass = met ? 'pass' : 'fail';
+    const infoText = item.action.info ? `: ${item.action.info}` : '';
+    const text = escapeHtml(`[${item.action.name}]${infoText}`);
+    return `<div class="action-step">
+      <div class="action-step-icon ${iconClass}">${icon}</div>
       <span>${text}</span>
+    </div>`;
+  }).join('');
+}
+
+function renderNLResults(nlResults) {
+  if (!nlResults || nlResults.length === 0) return '<span style="color:var(--text-muted);font-size:11px">–</span>';
+  return nlResults.map(item => {
+    const met = typeof item.met === 'boolean' ? item.met : null;
+    const icon = met === true ? '✓' : met === false ? '✗' : '?';
+    const iconClass = met === true ? 'pass' : met === false ? 'fail' : 'unknown';
+    const text = escapeHtml(item.nl_assertion ?? String(item));
+    const reason = item.justification ? escapeHtml(item.justification) : '';
+    return `<div class="action-step" style="align-items: flex-start;">
+      <div class="action-step-icon ${iconClass}" style="margin-top: 2px;">${icon}</div>
+      <div style="flex: 1;">
+        <div style="font-weight: 500; margin-bottom: 2px; color: var(--text-primary);">${text}</div>
+        ${reason ? `<div style="font-size: 10px; color: var(--text-muted); line-height: 1.4;"><strong>Reason:</strong> ${reason}</div>` : ''}
+      </div>
     </div>`;
   }).join('');
 }
@@ -444,7 +506,7 @@ function buildToolCard(turn) {
   const argsStr = typeof turn.args === 'object' && turn.args !== null
     ? JSON.stringify(turn.args, null, 2)
     : String(turn.args ?? '{}');
-  argsPre.innerHTML = syntaxHighlightJSON(escapeHtml(argsStr));
+  argsPre.innerHTML = syntaxHighlightJSON(argsStr);
   argsSection.appendChild(argsPre);
   body.appendChild(argsSection);
 
@@ -520,7 +582,7 @@ function buildCollapsible(label, data, isError, accentColor, toolName) {
       const jsonStr = typeof data === 'object' && data !== null
         ? JSON.stringify(data, null, 2)
         : String(data ?? '');
-      pre.innerHTML = syntaxHighlightJSON(escapeHtml(jsonStr));
+      pre.innerHTML = syntaxHighlightJSON(jsonStr);
       content.appendChild(pre);
     }
   } else {
@@ -530,7 +592,7 @@ function buildCollapsible(label, data, isError, accentColor, toolName) {
     const jsonStr = typeof data === 'object' && data !== null
       ? JSON.stringify(data, null, 2)
       : String(data ?? '');
-    pre.innerHTML = syntaxHighlightJSON(escapeHtml(jsonStr));
+    pre.innerHTML = syntaxHighlightJSON(jsonStr);
     content.appendChild(pre);
   }
 
@@ -647,14 +709,15 @@ function scoreToClass(score) {
 }
 
 // ── Constants ─────────────────────────────────────────────────────────────────
+// Slugs match _TASK_SLUGS in tau2-bench/scripts/urban_map_web/task_generation.py
 const TYPE_LABELS = {
   discovery:      'Discovery',
-  booking:        'Booking',
+  spatial_filter: 'Spatial Filter',
   en_route:       'En Route',
-  civic:          'Civic',
   transit:        'Transit',
   event_transit:  'Event+Transit',
-  spatial_filter: 'Spatial',
+  civic:          'Civic',
+  booking:        'Booking',
   itinerary:      'Itinerary',
   other:          'Other',
 };

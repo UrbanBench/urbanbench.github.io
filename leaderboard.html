@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UrbanBench — Leaderboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/leaderboard.css">
+</head>
+<body>
+  
+  <div class="nav-header">
+    <a href="index.html" class="back-link">← Back to Home</a>
+  </div>
+
+  <div class="leaderboard-wrapper">
+    <h1 class="leaderboard-title">UrbanBench Leaderboard</h1>
+
+    <div class="leaderboard-controls">
+      <div class="domain-toggle-container">
+        <button class="domain-toggle-option active" data-domain="urban_map_web">
+          🏙️ Urban Map Web
+        </button>
+        <button class="domain-toggle-option" data-domain="urban_satellite">
+          🛰️ Urban Satellite
+        </button>
+      </div>
+    </div>
+
+    <div class="metrics-table-container">
+      <table class="reliability-table">
+        <thead>
+          <tr>
+            <th>Rank</th>
+            <th>Model</th>
+            <th class="sortable active" data-sort="pass1_eff">Pass^1_EFF ↓</th>
+            <th class="sortable" data-sort="pass1">Pass^1</th>
+            <th class="sortable" data-sort="average_process_accuracy">Process Accuracy</th>
+            <th class="sortable" data-sort="average_outcome_accuracy">Outcome Accuracy</th>
+            <th>View Detail</th>
+          </tr>
+        </thead>
+        <tbody id="leaderboard-body">
+          <!-- Rows injected via JS -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script src="js/leaderboard.js"></script>
+</body>
+</html>

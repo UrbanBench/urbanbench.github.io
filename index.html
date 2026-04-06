@@ -3,144 +3,118 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>UrbanBench — Conversation Viewer</title>
-  <meta name="description" content="Visualise agent–user conversations from the UrbanBench urban-map-web benchmark.">
-
-  <!-- Fonts -->
+  <title>UrbanBench — Benchmark Viewer</title>
+  <meta name="description" content="UrbanBench: Interactive viewer for agent–user conversation simulations across urban reasoning domains.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
-
-  <!-- Styles -->
-  <link rel="stylesheet" href="css/theme.css">
-  <link rel="stylesheet" href="css/components.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/landing.css">
 </head>
 
 <body>
+  <div class="landing-wrapper">
 
-  <!-- ── Loading / Error overlays ────────────────────────────────────────── -->
-  <div id="loading-overlay">
-    <div class="spinner"></div>
-    <p>Loading simulation data…</p>
-  </div>
-
-  <div id="error-overlay" class="hidden">
-    <span style="font-size:48px">⚠️</span>
-    <p id="error-msg">An error occurred.</p>
-    <label for="file-input-err" style="cursor:pointer;margin-top:8px">
-      <button onclick="document.getElementById('file-input').click()"
-              style="padding:6px 16px;border-radius:6px;border:1px solid var(--border-medium);background:var(--surface-0);font-size:13px">
-        Upload JSON file
-      </button>
-    </label>
-  </div>
-
-  <!-- ── Header ───────────────────────────────────────────────────────────── -->
-  <header id="app-header">
-    <a class="header-logo" href="#">
-      <div class="header-logo-icon" title="UrbanBench">🌆</div>
-      <div>
-        <div class="header-title">UrbanBench</div>
-        <div class="header-subtitle">Urban-Map-Web · Conversation Viewer</div>
-      </div>
-    </a>
-
-    <div class="header-spacer"></div>
-
-    <!-- Populated by app.js once data loads -->
-    <div id="header-meta" class="header-meta"></div>
-  </header>
-
-  <!-- ── App body ─────────────────────────────────────────────────────────── -->
-  <div id="app-body">
-
-    <!-- ── Sidebar ──────────────────────────────────────────────────────── -->
-    <aside id="sidebar">
-      <div class="sidebar-header">
-        <h2>
-          Simulations
-          <span id="sim-count" class="sidebar-count">(0)</span>
-        </h2>
-
-        <!-- Task type filter -->
-        <div id="filter-chips" class="filter-chips"></div>
-
-        <!-- File upload -->
-        <div class="upload-row">
-          <button id="upload-btn" class="upload-btn" type="button">
-            📂 Load JSON
-          </button>
-          <span class="upload-hint">or drag &amp; drop below</span>
-          <input type="file" id="file-input" accept=".json,application/json">
+    <!-- ── Hero ──────────────────────────────────────────────────────────────── -->
+    <div class="hero">
+      <div class="hero-logo">
+        <div class="hero-logo-icon">🌆</div>
+        <div class="hero-brand">
+          <div class="hero-brand-name">UrbanBench</div>
+          <div class="hero-brand-sub">Benchmark Platform</div>
         </div>
       </div>
 
-      <!-- Simulation list (rendered by app.js) -->
-      <div id="simulation-list">
-        <div class="sidebar-empty">
-          <span class="icon">🗺️</span>
-          <p>No data loaded yet.<br>Click <strong>Load JSON</strong> to begin.</p>
+      <h1 class="hero-title">
+        Explore <span>Urban Agent</span> Simulations
+      </h1>
+      <p class="hero-subtitle">
+        Select a benchmark domain to view the global leaderboard and visualise agent–user conversations,
+        tool call details, evaluation scores, and assertion outcomes.
+      </p>
+    </div>
+
+    <!-- ── Domain cards ───────────────────────────────────────────────────────── -->
+    <div class="domain-grid">
+
+      <!-- Urban-Map-Web -->
+      <div class="domain-card map" id="card-map-web">
+        <div class="card-blob"></div>
+
+        <div class="card-icon-wrap">
+          <div class="card-icon">🗺️</div>
+          <span class="card-badge">🏙️ Urban Map</span>
+        </div>
+
+        <div class="card-title">Urban-Map-Web</div>
+        <p class="card-desc">
+          Agent navigates real-world urban locations using map search,
+          place details, route planning, and booking APIs to fulfill
+          complex multi-step user requests.
+        </p>
+
+        <div class="card-tools">
+          <span class="tool-pill">🗺️ text_search</span>
+          <span class="tool-pill">📍 place_details</span>
+          <span class="tool-pill">🛣️ compute_routes</span>
+          <span class="tool-pill">📅 check_availability</span>
+          <span class="tool-pill">🗄️ book_place</span>
+          <span class="tool-pill">📋 submit_report</span>
+        </div>
+
+        <div class="card-cta">
+          <a class="cta-btn primary" href="urban-map-web.html">
+            <span>View conversations</span>
+            <span class="cta-arrow">→</span>
+          </a>
+          <a class="cta-btn secondary" href="leaderboard.html?domain=urban_map_web">
+            <span>Leaderboard 🏆</span>
+          </a>
         </div>
       </div>
-    </aside>
 
-    <!-- ── Main content ──────────────────────────────────────────────────── -->
-    <main id="main-content">
+      <!-- Urban-Satellite -->
+      <div class="domain-card satellite" id="card-satellite">
+        <div class="card-blob"></div>
 
-      <!-- Welcome / no-selection screen -->
-      <div id="welcome-screen">
-        <div class="welcome-icon">🌆</div>
-        <div class="welcome-title">Urban-Map-Web Conversation Viewer</div>
-        <div class="welcome-subtitle">
-          Select a simulation from the list on the left to explore the full
-          agent–user conversation with tool call details, evaluation scores,
-          and assertion outcomes.
+        <div class="card-icon-wrap">
+          <div class="card-icon">🛰️</div>
+          <span class="card-badge">🌍 Satellite</span>
         </div>
 
-        <!-- Tool group legend -->
-        <div class="welcome-legend">
-          <div class="legend-item map">🗺️ Map Tool</div>
-          <div class="legend-item web">🌐 Web Tool</div>
-          <div class="legend-item db">🗄️ Database Tool</div>
-          <div class="legend-item generic">⚙️ Generic Tool</div>
+        <div class="card-title">Urban-Satellite</div>
+        <p class="card-desc">
+          Agent analyzes satellite imagery using VLM-powered perception tools
+          to classify land use, detect infrastructure, assess urban density,
+          and submit formal site assessments.
+        </p>
+
+        <div class="card-tools">
+          <span class="tool-pill">🛰️ get_satellite_tile</span>
+          <span class="tool-pill">🏙️ classify_land_use</span>
+          <span class="tool-pill">📊 analyze_density</span>
+          <span class="tool-pill">🌿 env_ratio</span>
+          <span class="tool-pill">🔭 detect_infra</span>
+          <span class="tool-pill">📋 submit_assessment</span>
         </div>
 
-        <!-- Upload hint when no data -->
-        <div id="welcome-upload-hint" style="margin-top:16px;font-size:13px;color:var(--text-muted)">
-          No sample data found. Upload a
-          <code style="background:var(--surface-2);padding:1px 5px;border-radius:4px;font-size:12px">dynamic_validator_results.json</code>
-          file to get started.
+        <div class="card-cta">
+          <a class="cta-btn primary" href="urban-satellite.html">
+            <span>View conversations</span>
+            <span class="cta-arrow">→</span>
+          </a>
+          <a class="cta-btn secondary" href="leaderboard.html?domain=urban_satellite">
+            <span>Leaderboard 🏆</span>
+          </a>
         </div>
       </div>
 
-      <!-- Conversation view (hidden until a simulation is selected) -->
-      <div id="conversation-view" class="hidden">
+    </div><!-- /.domain-grid -->
 
-        <!-- Task info panel -->
-        <div id="task-info-panel">
-          <div id="task-info-header" class="task-info-header">
-            <span style="font-size:13px">📊</span>
-            <span id="task-info-id" class="task-info-id"></span>
-            <span id="task-info-toggle" class="task-info-toggle open">▲</span>
-          </div>
-          <div id="task-info-body" class="task-info-body">
-            <!-- Populated by app.js -->
-          </div>
-        </div>
+    <!-- ── Footer ────────────────────────────────────────────────────────────── -->
+    <footer class="landing-footer">
+      UrbanBench · Agent Benchmark for Urban Reasoning
+    </footer>
 
-        <!-- Thread -->
-        <div id="thread-container">
-          <!-- Populated by app.js -->
-        </div>
-
-      </div><!-- /#conversation-view -->
-
-    </main><!-- /#main-content -->
-
-  </div><!-- /#app-body -->
-
-  <!-- ── Scripts (ES modules) ─────────────────────────────────────────────── -->
-  <script type="module" src="js/app.js"></script>
-
+  </div><!-- /.landing-wrapper -->
 </body>
 </html>

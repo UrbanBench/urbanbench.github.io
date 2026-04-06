@@ -27,7 +27,7 @@
   --color-generic-bg:   #fffbeb;
   --color-generic-border:#fcd34d;
 
-  /* Task types */
+  /* Task types — Urban-Map-Web */
   --color-type-discovery:     #0ea5e9;
   --color-type-booking:       #8b5cf6;
   --color-type-en_route:      #10b981;
@@ -37,6 +37,17 @@
   --color-type-spatial_filter:#06b6d4;
   --color-type-itinerary:     #84cc16;
   --color-type-other:         #6b7280;
+
+  /* Task types — Urban-Satellite */
+  --color-type-classification: #3b82f6;
+  --color-type-comparison:     #a855f7;
+  --color-type-detection:      #06b6d4;
+  --color-type-verification:   #10b981;
+  --color-type-encroachment:   #f97316;
+  --color-type-change_check:   #eab308;
+  --color-type-env_profile:    #22c55e;
+  --color-type-suitability:    #6366f1;
+  --color-type-accessibility:  #ec4899;
 
   /* Surfaces */
   --surface-0:    #ffffff;

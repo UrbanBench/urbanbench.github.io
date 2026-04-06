@@ -25,10 +25,45 @@ export function loadData(json) {
     tasksMap[task.id] = task;
   }
 
+  // --- RECORRECT ACTIONS IN MEMORY ---
+  const BYPASS_ARGUMENTS = new Set(["query", "description", "summary", "image_path"]);
+  const actionIdToName = {};
+  for (const task of json.tasks ?? []) {
+    const actions = task.evaluation_criteria?.actions ?? [];
+    for (const action of actions) {
+      if (action.action_id) {
+        actionIdToName[action.action_id] = action.name;
+      }
+    }
+  }
+
   // Build simulation records
   const simulations = (json.simulations ?? []).map(sim => {
     const taskMeta = tasksMap[sim.task_id] ?? null;
     const rewardInfo = sim.reward_info ?? {};
+
+    // Apply recorrection rule to action checks
+    const checks = rewardInfo.action_checks ?? rewardInfo.action_results ?? [];
+    for (const check of checks) {
+      const actionObj = check.action ?? {};
+      const actionId = actionObj.action_id;
+      if (!actionId) continue;
+      
+      const expectedName = actionIdToName[actionId];
+      const actualName = actionObj.name;
+      const actualArgs = actionObj.arguments ?? {};
+      
+      // Rule: If name matches and contains bypassable args, it's a pass
+      if (actualName === expectedName) {
+        const hasBypassArg = Object.keys(actualArgs).some(arg => BYPASS_ARGUMENTS.has(arg));
+        if (hasBypassArg) {
+          if (check.action_match !== true) {
+            check.action_match = true;
+            check.action_reward = 1.0;
+          }
+        }
+      }
+    }
 
     return {
       id: sim.id,
@@ -66,12 +101,18 @@ export function loadData(json) {
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
 const TASK_TYPES = [
-  'discovery', 'booking', 'en_route', 'civic', 'transit',
-  'event_transit', 'spatial_filter', 'itinerary',
+  // Urban-Map-Web types (from task_generation.py _TASK_SLUGS)
+  'discovery', 'spatial_filter', 'en_route', 'transit',
+  'event_transit', 'civic', 'booking', 'itinerary',
+  // Urban-Satellite types (from task_generation.py _TASK_SLUGS)
+  'classification', 'comparison', 'detection', 'verification',
+  'encroachment', 'change_check', 'env_profile', 'suitability', 'accessibility',
 ];
 
 function deriveTaskType(taskId) {
-  // e.g. "urban_map_web_en_route_01" → "en_route"
+  // e.g. "urban_map_web_en_route_01"          → "en_route"
+  // e.g. "urban_satellite_classification_01"  → "classification"
+  // e.g. "urban_satellite_env_profile_01"     → "env_profile"
   for (const t of TASK_TYPES) {
     if (taskId.includes(t)) return t;
   }

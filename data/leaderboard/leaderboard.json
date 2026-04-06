@@ -1,0 +1,30 @@
+{
+  "urban_map_web": [
+    {
+      "model_name": "gpt-4.1-mini",
+      "filename": "gpt-4.1-mini.json",
+      "average_process_accuracy": 0.5709972394755002,
+      "average_outcome_accuracy": 0.6565217391304349,
+      "pass1": 0.30434782608695654,
+      "pass1_eff": 0.2887422360248448
+    },
+    {
+      "model_name": "gpt-4.1-nano",
+      "filename": "gpt-4.1-nano.json",
+      "average_process_accuracy": 0.5401483781918565,
+      "average_outcome_accuracy": 0.7010869565217392,
+      "pass1": 0.2608695652173913,
+      "pass1_eff": 0.22071256038647344
+    }
+  ],
+  "urban_satellite": [
+    {
+      "model_name": "gpt-4.1-mini",
+      "filename": "gpt-4.1-mini.json",
+      "average_process_accuracy": 0.5640235690235689,
+      "average_outcome_accuracy": 0.5077777777777778,
+      "pass1": 0.13333333333333333,
+      "pass1_eff": 0.12666666666666665
+    }
+  ]
+}

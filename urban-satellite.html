@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UrbanBench — Urban-Satellite Viewer</title>
+  <meta name="description" content="Visualise agent–user conversations from the UrbanBench Urban-Satellite benchmark, including satellite imagery, VLM tool calls, and site assessments.">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/theme.css?v=2">
+  <link rel="stylesheet" href="css/components.css?v=2">
+</head>
+
+<body>
+
+  <!-- ── Loading / Error overlays ────────────────────────────────────────── -->
+  <div id="loading-overlay">
+    <div class="spinner"></div>
+    <p>Loading simulation data…</p>
+  </div>
+
+  <div id="error-overlay" class="hidden">
+    <span style="font-size:48px">⚠️</span>
+    <p id="error-msg">An error occurred.</p>
+    <label style="cursor:pointer;margin-top:8px">
+      <button onclick="document.getElementById('file-input').click()"
+              style="padding:6px 16px;border-radius:6px;border:1px solid var(--border-medium);background:var(--surface-0);font-size:13px">
+        Upload JSON file
+      </button>
+    </label>
+  </div>
+
+  <!-- ── Header ───────────────────────────────────────────────────────────── -->
+  <header id="app-header">
+    <a class="header-logo" href="index.html" title="Back to Home">
+      <div class="header-logo-icon" title="UrbanBench">🛰️</div>
+      <div>
+        <div class="header-title">UrbanBench</div>
+        <div class="header-subtitle">Urban-Satellite · Conversation Viewer</div>
+      </div>
+    </a>
+
+    <div class="header-spacer"></div>
+
+    <!-- Model Selection -->
+    <div class="model-selector-container">
+      <label for="model-selector">Model:</label>
+      <select id="model-selector" class="model-selector">
+      </select>
+    </div>
+
+    <!-- Populated by satelliteApp.js once data loads -->
+    <div id="header-meta" class="header-meta"></div>
+  </header>
+
+  <!-- ── App body ─────────────────────────────────────────────────────────── -->
+  <div id="app-body">
+
+    <!-- ── Sidebar ──────────────────────────────────────────────────────── -->
+    <aside id="sidebar">
+      <div class="sidebar-header">
+        <h2>
+          Simulations
+          <span id="sim-count" class="sidebar-count">(0)</span>
+        </h2>
+
+        <!-- Task type filter -->
+        <div id="filter-chips" class="filter-chips"></div>
+
+        <!-- File upload -->
+        <div class="upload-row">
+          <button id="upload-btn" class="upload-btn" type="button">
+            📂 Load JSON
+          </button>
+          <span class="upload-hint">or drag &amp; drop below</span>
+          <input type="file" id="file-input" accept=".json,application/json">
+        </div>
+      </div>
+
+      <!-- Simulation list (rendered by satelliteApp.js) -->
+      <div id="simulation-list">
+        <div class="sidebar-empty">
+          <span class="icon">🛰️</span>
+          <p>No data loaded yet.<br>Click <strong>Load JSON</strong> to begin.</p>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ── Main content ──────────────────────────────────────────────────── -->
+    <main id="main-content">
+
+      <!-- Welcome / no-selection screen -->
+      <div id="welcome-screen">
+        <div class="welcome-icon">🛰️</div>
+        <div class="welcome-title">Urban-Satellite Conversation Viewer</div>
+        <div class="welcome-subtitle">
+          Select a simulation from the list on the left to explore the full
+          agent–user conversation with satellite imagery, VLM tool calls,
+          evaluation scores, and assertion outcomes.
+        </div>
+
+        <!-- Tool group legend (Urban-Satellite categories) -->
+        <div class="welcome-legend">
+          <div class="legend-item" style="--legend-color:#0ea5e9">🛰️ Spatial Retrieval</div>
+          <div class="legend-item" style="--legend-color:#10b981">🔭 VLM Perception</div>
+          <div class="legend-item" style="--legend-color:#8b5cf6">📋 Database Write</div>
+          <div class="legend-item generic">🤝 Generic Tool</div>
+        </div>
+
+        <!-- Upload hint when no data -->
+        <div id="welcome-upload-hint" style="margin-top:16px;font-size:13px;color:var(--text-muted)">
+          No sample data found. Upload a
+          <code style="background:var(--surface-2);padding:1px 5px;border-radius:4px;font-size:12px">simulation_results.json</code>
+          file to get started.
+        </div>
+      </div>
+
+      <!-- Conversation view (hidden until a simulation is selected) -->
+      <div id="conversation-view" class="hidden">
+
+        <!-- Task info panel -->
+        <div id="task-info-panel">
+          <div id="task-info-header" class="task-info-header">
+            <span style="font-size:13px">📊</span>
+            <span id="task-info-id" class="task-info-id"></span>
+            <span id="task-info-toggle" class="task-info-toggle open">▲</span>
+          </div>
+          <div id="task-info-body" class="task-info-body">
+            <!-- Populated by satelliteApp.js -->
+          </div>
+        </div>
+
+        <!-- Thread -->
+        <div id="thread-container">
+          <!-- Populated by satelliteApp.js -->
+        </div>
+
+      </div><!-- /#conversation-view -->
+
+    </main><!-- /#main-content -->
+
+  </div><!-- /#app-body -->
+
+  <!-- ── Scripts (ES modules) ─────────────────────────────────────────────── -->
+  <script type="module" src="js/satelliteApp.js?v=3"></script>
+
+</body>
+</html>

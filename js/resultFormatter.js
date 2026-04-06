@@ -148,6 +148,11 @@ function formatObject(obj, toolName) {
     return formatReport(obj);
   }
 
+  // Special handling for satellite site assessments
+  if (toolName === 'submit_site_assessment') {
+    return formatSiteAssessment(obj);
+  }
+
   // Generic object display
   const pairs = Object.entries(obj)
     .slice(0, 20)
@@ -207,6 +212,29 @@ function formatReport(report) {
         <tr><td style="color:var(--text-muted);padding:2px 0"><strong>Ticket:</strong></td><td style="font-family:monospace;color:#7c3aed;font-weight:700">${escapeHtml(ticket_id)}</td></tr>
         <tr><td style="color:var(--text-muted);padding:2px 0"><strong>Issue:</strong></td><td>${escapeHtml(issue_type)}</td></tr>
         <tr><td style="color:var(--text-muted);padding:2px 0"><strong>Status:</strong></td><td>${escapeHtml(status ?? 'Submitted')}</td></tr>
+      </table>
+    </div>
+  `;
+
+  return { type: 'object', html };
+}
+
+function formatSiteAssessment(assessment) {
+  const { receipt_id, site_id, decision, justification, status } = assessment;
+  const isApproved = String(decision ?? '').toLowerCase().includes('approved') ||
+                     String(status ?? '').toLowerCase().includes('success');
+
+  const html = `
+    <div style="padding:10px;background:#faf5ff;border-radius:8px;border:1px solid #c4b5fd">
+      <div style="color:#7c3aed;font-weight:700;margin-bottom:8px;font-size:12px;display:flex;align-items:center;gap:6px">
+        📋 Site Assessment Submitted
+      </div>
+      <table style="font-size:11px;width:100%;border-collapse:collapse">
+        ${receipt_id ? `<tr><td style="color:#6b7280;padding:3px 0;width:90px"><strong>Receipt ID:</strong></td><td style="font-family:monospace;color:#8b5cf6;font-weight:700">${escapeHtml(receipt_id)}</td></tr>` : ''}
+        ${site_id ? `<tr><td style="color:#6b7280;padding:3px 0"><strong>Site:</strong></td><td style="font-family:monospace">${escapeHtml(site_id)}</td></tr>` : ''}
+        ${decision ? `<tr><td style="color:#6b7280;padding:3px 0;vertical-align:top"><strong>Decision:</strong></td><td style="font-weight:600;color:#7c3aed">${escapeHtml(decision)}</td></tr>` : ''}
+        ${justification ? `<tr><td style="color:#6b7280;padding:3px 0;vertical-align:top"><strong>Justification:</strong></td><td style="color:#374151;line-height:1.5">${escapeHtml(justification)}</td></tr>` : ''}
+        ${status ? `<tr><td style="color:#6b7280;padding:3px 0"><strong>Status:</strong></td><td>${escapeHtml(status)}</td></tr>` : ''}
       </table>
     </div>
   `;

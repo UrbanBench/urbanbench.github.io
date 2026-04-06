@@ -57,11 +57,14 @@ export function parseMessages(messages) {
             resultParsed = tryParseJSON(resultRaw);
           }
 
+          const toolName = tc.name ?? tc.function?.name;
+          const toolArgs = tc.arguments ?? tc.function?.arguments ?? '{}';
+
           turns.push({
             type: 'tool_call',
-            toolName: tc.name,
+            toolName: toolName,
             toolCallId: tc.id,
-            args: tc.arguments ?? {},
+            args: tryParseJSON(toolArgs),
             result: resultParsed,
             resultRaw: resultRaw,
             error,
