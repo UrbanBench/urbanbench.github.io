@@ -114,8 +114,9 @@ document.addEventListener('DOMContentLoaded', () => {
       else if (index === 1) { rankHtml = '🥈'; rankClass = 'silver-medal'; }
       else if (index === 2) { rankHtml = '🥉'; rankClass = 'bronze-medal'; }
 
-      // Viewer URL
-      const fileStem = model.filename.replace('.json', '');
+      // Viewer URL: prefer source filename as model key, fallback to data_file.
+      const sourceFile = model.filename || model.data_file || '';
+      const fileStem = sourceFile.replace('.json', '').replace('_recorrected', '');
       const viewerUrl = currentDomain === 'urban_map_web' 
                           ? `urban-map-web.html?model=${fileStem}` 
                           : `urban-satellite.html?model=${fileStem}`;

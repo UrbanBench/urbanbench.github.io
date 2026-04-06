@@ -25,7 +25,7 @@ spatial distances, and submit formal site assessments.
 
 - **Landing page** — domain selection page routing to each viewer and leaderboard
 - **Global Leaderboard** — Aggregated metric scores (Pass^1, Efficiency, Process/Outcome Accuracy) dynamic per model
-- **Dynamic Model Selection** — Seamlessly switch back and forth traversing different trajectories natively (loaded directly from folders like `gpt-4.1-mini.json`, `qwen-32b.json`...)
+- **Dynamic Model Selection** — Seamlessly switch back and forth traversing different trajectories natively (loaded directly from folders like `gpt-4.1-mini.json`, `qwen3-32b.json`...)
 - **Conversation view** — full chat thread with user bubbles and agent bubbles
 - **Tool call cards** — every tool invocation is rendered as a card showing:
   - 🛰️ **Satellite image preview** — for Urban-Satellite tools that accept an `image_path` argument, the referenced satellite tile is rendered inline in the tool card (current and historical images)
@@ -125,7 +125,7 @@ cp path/to/satellite_results.json data/urban_satellite/gpt-5.json
 2. **Calculate \& Update Display Dashboard:**
 ```bash
 # Execute the python evaluator
-python3 metrics/calculate_leaderboard.py --manual_reward --action_threshold 0.8 --nl_threshold 0.6
+python3 metrics/calculate_leaderboard.py --action_threshold 0.8 --nl_threshold 0.6
 ```
 *This scans both `data/urban_map_web/` and `data/urban_satellite/` for raw scores, updates conditional efficiency tracking, writes `data/leaderboard/leaderboard.json`, and seamlessly updates BOTH the online Leaderboard component and the Model Dropdown Viewer dynamically on the UI.*
 

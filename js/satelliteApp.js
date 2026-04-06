@@ -17,6 +17,7 @@ const state = {
   filtered: [],
   activeFilters: new Set(),
   selectedId: null,
+  modelDataFiles: {},
 };
 
 // ── DOM refs ─────────────────────────────────────────────────────────────────
@@ -59,14 +60,16 @@ window.addEventListener('DOMContentLoaded', async () => {
       if (modelSelect && models.length > 0) {
         modelSelect.innerHTML = '';
         models.forEach(m => {
-          const val = m.filename.replace('.json', '');
+          const val = (m.filename || '').replace('.json', '');
+          if (!val) return;
+          state.modelDataFiles[val] = m.data_file || m.filename || `${val}.json`;
           const opt = document.createElement('option');
           opt.value = val;
           opt.textContent = m.model_name;
           modelSelect.appendChild(opt);
         });
-        if (!currentModel || !models.some(m => m.filename.replace('.json', '') === currentModel)) {
-          currentModel = models[0].filename.replace('.json', '');
+        if (!currentModel || !models.some(m => (m.filename || '').replace('.json', '') === currentModel)) {
+          currentModel = (models[0].filename || '').replace('.json', '');
         }
       }
     }
@@ -91,8 +94,9 @@ window.addEventListener('DOMContentLoaded', async () => {
 
 async function loadModelData(modelName) {
   showLoading();
+  const dataFile = state.modelDataFiles[modelName] || `${modelName}.json`;
   try {
-    const response = await fetch(`./data/urban_satellite/${modelName}.json`);
+    const response = await fetch(`./data/urban_satellite/${dataFile}`);
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     const json = await response.json();
     initWithData(json);

@@ -2,7 +2,6 @@ import argparse
 import json
 import os
 import glob
-from collections import defaultdict
 
 # Setup paths
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -17,22 +16,34 @@ def recorrect_simulation_actions(data):
     If tool name is correct and contains bypassable arguments, mark as match.
     """
     tasks = data.get('tasks', [])
-    # Map action_id to expected tool name
-    action_id_to_name = {}
+    # Build per-task action_id -> name map to avoid cross-task action_id collisions
+    # (different tasks reuse the same action_id strings like "a1", "a2", etc.)
+    task_action_id_to_name = {}
     for task in tasks:
-        actions = task.get('evaluation_criteria', {}).get('actions', [])
-        for action in actions:
+        task_id = task.get('id')
+        if not task_id:
+            continue
+        task_map = {}
+        for action in task.get('evaluation_criteria', {}).get('actions', []):
             action_id = action.get('action_id')
             if action_id:
-                action_id_to_name[action_id] = action.get('name')
-                
+                task_map[action_id] = action.get('name')
+        task_action_id_to_name[task_id] = task_map
+
     simulations = data.get('simulations', [])
-    updated = False
+    updated = 0
     
     for sim in simulations:
-        reward_info = sim.get('reward_info') or sim.get('reward') or {}
+        # Use the task-specific action_id map for this simulation
+        action_id_to_name = task_action_id_to_name.get(sim.get('task_id'), {})
+
+        reward_info = sim.get('reward_info')
         if not isinstance(reward_info, dict):
-            continue
+            reward_candidate = sim.get('reward')
+            if isinstance(reward_candidate, dict):
+                reward_info = reward_candidate
+            else:
+                continue
             
         checks = reward_info.get('action_checks') or reward_info.get('action_results') or []
         for check in checks:
@@ -52,7 +63,7 @@ def recorrect_simulation_actions(data):
                     if check.get('action_match') is not True:
                         check['action_match'] = True
                         check['action_reward'] = 1.0
-                        updated = True
+                        updated += 1
     return updated
 
 def compute_action_score(reward_info):
@@ -87,9 +98,17 @@ def compute_turn_act(messages):
                 act += 1
     return max(1, act)  # Ensure non-zero to avoid div/0
 
-def process_domain(domain_slug, manual_reward=False, action_threshold=0.8, nl_threshold=0.8, recorrect_action=False):
+def get_recorrected_filename(source_path):
+    stem, ext = os.path.splitext(os.path.basename(source_path))
+    return f"{stem}_recorrected{ext}"
+
+
+def process_domain(domain_slug, action_threshold=0.8, nl_threshold=0.8):
     domain_path = os.path.join(DATA_DIR, domain_slug)
-    json_files = glob.glob(os.path.join(domain_path, '*.json'))
+    json_files = sorted(
+        p for p in glob.glob(os.path.join(domain_path, '*.json'))
+        if not p.endswith('_recorrected.json')
+    )
     
     results = []
     
@@ -97,9 +116,9 @@ def process_domain(domain_slug, manual_reward=False, action_threshold=0.8, nl_th
         try:
             with open(jpath, 'r') as f:
                 data = json.load(f)
-            if recorrect_action:
-                if recorrect_simulation_actions(data):
-                    print(f"Recorrected in memory (not overwritten): {jpath}")
+            recorrected_checks = recorrect_simulation_actions(data)
+            if recorrected_checks > 0:
+                print(f"Recorrected {recorrected_checks} checks: {jpath}")
         except Exception as e:
             print(f"Error loading {jpath}: {e}")
             continue
@@ -115,13 +134,18 @@ def process_domain(domain_slug, manual_reward=False, action_threshold=0.8, nl_th
         total_nl_accuracy = 0
         pass_count = 0
         ce_sum = 0
+        overwritten_rewards = 0
         
         for sim in simulations:
             task_id = sim.get('task_id')
-            reward_info = sim.get('reward_info') or sim.get('reward') or {}
-            if isinstance(reward_info, float) or isinstance(reward_info, int):
-                # Fallback if reward is just a number
-                reward_info = {}
+            reward_info = sim.get('reward_info')
+            if not isinstance(reward_info, dict):
+                reward_candidate = sim.get('reward')
+                if isinstance(reward_candidate, dict):
+                    reward_info = reward_candidate
+                else:
+                    reward_info = {}
+                sim['reward_info'] = reward_info
                 
             action_score = compute_action_score(reward_info)
             nl_accuracy = compute_nl_accuracy(reward_info)
@@ -129,11 +153,14 @@ def process_domain(domain_slug, manual_reward=False, action_threshold=0.8, nl_th
             total_action_score += action_score
             total_nl_accuracy += nl_accuracy
             
-            if manual_reward:
-                is_success = calculate_manual_reward(action_score, nl_accuracy, action_threshold, nl_threshold)
-            else:
-                sim_reward = sim.get('reward', 0)
-                is_success = (sim_reward == 1.0)
+            # Pass decision is always computed from current action/nl metrics.
+            is_success = calculate_manual_reward(action_score, nl_accuracy, action_threshold, nl_threshold)
+
+            passk_reward = 1.0 if is_success else 0.0
+            if sim.get('reward') != passk_reward:
+                overwritten_rewards += 1
+            sim['reward'] = passk_reward
+            reward_info['reward'] = passk_reward
             
             if is_success:
                 pass_count += 1
@@ -156,9 +183,18 @@ def process_domain(domain_slug, manual_reward=False, action_threshold=0.8, nl_th
         else:
             avg_action_score = avg_nl_accuracy = pass1 = pass1_eff = 0.0
 
+        recorrected_filename = get_recorrected_filename(jpath)
+        recorrected_path = os.path.join(domain_path, recorrected_filename)
+        with open(recorrected_path, 'w') as wf:
+            json.dump(data, wf, indent=2)
+
+        if overwritten_rewards > 0:
+            print(f"Overwrote reward for {overwritten_rewards} simulations: {recorrected_path}")
+
         results.append({
             "model_name": model_name,
             "filename": os.path.basename(jpath),
+            "data_file": recorrected_filename,
             "average_process_accuracy": avg_action_score,
             "average_outcome_accuracy": avg_nl_accuracy,
             "pass1": pass1,
@@ -171,10 +207,8 @@ def process_domain(domain_slug, manual_reward=False, action_threshold=0.8, nl_th
 
 def main():
     parser = argparse.ArgumentParser(description='Calculate leaderboard metrics')
-    parser.add_argument('--manual_reward', action='store_true', help='Calculate reward manually from action and NL accuracy')
     parser.add_argument('--action_threshold', type=float, default=0.8, help='Threshold for action accuracy (default: 0.8)')
     parser.add_argument('--nl_threshold', type=float, default=0.8, help='Threshold for NL accuracy (default: 0.8)')
-    parser.add_argument('--recorrect_action', action='store_true', help='Recorrect actions based on tool name and bypassable arguments, and overwrite JSON files')
     args = parser.parse_args()
 
     domains = ['urban_map_web', 'urban_satellite']
@@ -183,13 +217,14 @@ def main():
     leaderboard_data = {}
     
     for domain in domains:
-        print(f"Processing domain: {domain} (manual_reward={args.manual_reward}, recorrect_action={args.recorrect_action})")
+        print(
+            f"Processing domain: {domain} (recorrect_action=default, "
+            f"action_threshold={args.action_threshold}, nl_threshold={args.nl_threshold})"
+        )
         leaderboard_data[domain] = process_domain(
             domain, 
-            manual_reward=args.manual_reward,
             action_threshold=args.action_threshold,
-            nl_threshold=args.nl_threshold,
-            recorrect_action=args.recorrect_action
+            nl_threshold=args.nl_threshold
         )
         
     out_path = os.path.join(OUTPUT_DIR, 'leaderboard.json')

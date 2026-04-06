@@ -2855,8 +2855,8 @@
               "info": "Classify the land use of the first site.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -2869,8 +2869,8 @@
               "info": "Assess the built density of the first site.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -2883,8 +2883,8 @@
               "info": "Assess the green/environmental coverage of the first site.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -2898,8 +2898,8 @@
               "info": "Count visible solar panels at the first site.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -2927,8 +2927,8 @@
               "info": "Classify the land use of the second site.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -2941,8 +2941,8 @@
               "info": "Assess the built density of the second site.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -2955,8 +2955,8 @@
               "info": "Assess the green/environmental coverage of the second site.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -2970,8 +2970,8 @@
               "info": "Count visible solar panels at the second site.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -3472,7 +3472,8 @@
         }
       ],
       "trial": 0,
-      "seed": 626729
+      "seed": 626729,
+      "reward": 0.0
     },
     {
       "id": "7dce7c84-4d6a-4bf4-b9f1-baca40fa1124",
@@ -3485,7 +3486,7 @@
       "agent_cost": 0.0043844,
       "user_cost": 0.0021612,
       "reward_info": {
-        "reward": 0.0,
+        "reward": 1.0,
         "db_check": null,
         "env_assertions": null,
         "action_checks": [
@@ -3515,8 +3516,8 @@
               "info": "Classify the site's land use to determine whether it remains rural/agricultural.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -3530,8 +3531,8 @@
               "info": "Count harbor infrastructure to check for waterfront encroachment.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -3544,8 +3545,8 @@
               "info": "Assess the green/environmental coverage classification for shoreline impact context.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           }
         ],
         "nl_assertions": [
@@ -4058,7 +4059,8 @@
         }
       ],
       "trial": 0,
-      "seed": 626729
+      "seed": 626729,
+      "reward": 1.0
     },
     {
       "id": "0f994605-966d-40e3-ba82-503d9c60a83f",
@@ -4071,7 +4073,7 @@
       "agent_cost": 0.0055152,
       "user_cost": 0.0026739999999999997,
       "reward_info": {
-        "reward": 0.0,
+        "reward": 1.0,
         "db_check": null,
         "env_assertions": null,
         "action_checks": [
@@ -4101,8 +4103,8 @@
               "info": "Determine whether the site\u2019s land use is Rural/Agricultural, Natural/Wildland, or another category.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -4115,8 +4117,8 @@
               "info": "Assess whether the site\u2019s built density is Sparse, Moderate, or Dense.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -4129,8 +4131,8 @@
               "info": "Assess whether the site\u2019s green ratio is Low, Medium, or High.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -4144,8 +4146,8 @@
               "info": "Count visible Windmill infrastructure to verify whether exactly 0 are present.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           }
         ],
         "nl_assertions": [
@@ -4825,7 +4827,8 @@
         }
       ],
       "trial": 0,
-      "seed": 626729
+      "seed": 626729,
+      "reward": 1.0
     },
     {
       "id": "0513f823-597c-476e-918f-06a48d71e5cb",
@@ -4838,7 +4841,7 @@
       "agent_cost": 0.0064168,
       "user_cost": 0.0028135999999999994,
       "reward_info": {
-        "reward": 0.0,
+        "reward": 1.0,
         "db_check": null,
         "env_assertions": null,
         "action_checks": [
@@ -4868,8 +4871,8 @@
               "info": "Determine whether the site is Suburban Residential or another land-use category.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -4882,8 +4885,8 @@
               "info": "Assess whether the site density is Sparse, Moderate, or Dense.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -4896,8 +4899,8 @@
               "info": "Assess whether the site has a High green ratio.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -4911,8 +4914,8 @@
               "info": "Count Ground Track Fields visible near the site.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -4926,8 +4929,8 @@
               "info": "Count Stadiums visible near the site.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -5728,7 +5731,8 @@
         }
       ],
       "trial": 0,
-      "seed": 626729
+      "seed": 626729,
+      "reward": 1.0
     },
     {
       "id": "3708a032-ac19-4528-a40d-63616c951a49",
@@ -5771,8 +5775,8 @@
               "info": "Classify the site's land-use type from the current image.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -5785,8 +5789,8 @@
               "info": "Assess whether the site's built-up density is Sparse, Moderate, or Dense.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -5799,8 +5803,8 @@
               "info": "Determine whether the site's green ratio is Low, Medium, or High.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -5815,8 +5819,8 @@
               "info": "Check whether a continuous physical path exists across the site to support access.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -6618,7 +6622,8 @@
         }
       ],
       "trial": 0,
-      "seed": 626729
+      "seed": 626729,
+      "reward": 0.0
     },
     {
       "id": "9d056ce2-054b-4ae9-8a27-4f3fd36825d7",
@@ -6631,7 +6636,7 @@
       "agent_cost": 0.0041259999999999995,
       "user_cost": 0.0020775999999999998,
       "reward_info": {
-        "reward": 0.0,
+        "reward": 1.0,
         "db_check": null,
         "env_assertions": null,
         "action_checks": [
@@ -6663,8 +6668,8 @@
               "info": "Check whether a continuous physical path exists between the residential side and the school zone.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -6678,8 +6683,8 @@
               "info": "Count bridges visible in the site.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -6693,8 +6698,8 @@
               "info": "Count overpasses visible in the site.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -6707,8 +6712,8 @@
               "info": "Assess the site\u2019s built-up density classification.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           }
         ],
         "nl_assertions": [
@@ -7254,7 +7259,8 @@
         }
       ],
       "trial": 0,
-      "seed": 626729
+      "seed": 626729,
+      "reward": 1.0
     },
     {
       "id": "6bc5a8e9-5dd3-4939-b3ab-e4fb40bc4f44",
@@ -7297,8 +7303,8 @@
               "info": "Classify the current land use of the site.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -7311,8 +7317,8 @@
               "info": "Determine the settlement density classification for the site.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -7325,8 +7331,8 @@
               "info": "Assess the green/environmental coverage classification for context.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           }
         ],
         "nl_assertions": [
@@ -7779,7 +7785,8 @@
         }
       ],
       "trial": 0,
-      "seed": 626729
+      "seed": 626729,
+      "reward": 0.0
     },
     {
       "id": "deec04a7-7a12-43a9-9f29-5dbe198e71d0",
@@ -7822,8 +7829,8 @@
               "info": "Determine the land-use classification for the site.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -7836,8 +7843,8 @@
               "info": "Assess whether the site has residential-style built density indicative of encroachment.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -7851,8 +7858,8 @@
               "info": "Count visible parking lots as supporting evidence of incompatible development.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           }
         ],
         "nl_assertions": [
@@ -8365,7 +8372,8 @@
         }
       ],
       "trial": 0,
-      "seed": 626729
+      "seed": 626729,
+      "reward": 0.0
     },
     {
       "id": "0752ceb6-361e-4757-93ee-4ad7ef1b9998",
@@ -8378,7 +8386,7 @@
       "agent_cost": 0.005376399999999999,
       "user_cost": 0.0020071999999999998,
       "reward_info": {
-        "reward": 0.0,
+        "reward": 1.0,
         "db_check": null,
         "env_assertions": null,
         "action_checks": [
@@ -8410,8 +8418,8 @@
               "info": "Check whether a continuous physical path exists between the residential area and nearby infrastructure.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -8425,8 +8433,8 @@
               "info": "Count hospitals visible in the site.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -8439,8 +8447,8 @@
               "info": "Assess the site's visual built density.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -8453,8 +8461,8 @@
               "info": "Assess green/environmental coverage for accessibility context.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           }
         ],
         "nl_assertions": [
@@ -8999,7 +9007,8 @@
         }
       ],
       "trial": 0,
-      "seed": 626729
+      "seed": 626729,
+      "reward": 1.0
     },
     {
       "id": "90dc9f14-b5c7-47d7-9c87-504b3e437858",
@@ -9042,8 +9051,8 @@
               "info": "Classify the site\u2019s land use to determine whether it is suburban residential or another category.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -9056,8 +9065,8 @@
               "info": "Assess the settlement density to support the suburban-versus-rural interpretation.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -9070,8 +9079,8 @@
               "info": "Measure the green/environmental coverage level for additional context about the site.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           }
         ],
         "nl_assertions": [
@@ -9578,7 +9587,8 @@
         }
       ],
       "trial": 0,
-      "seed": 626729
+      "seed": 626729,
+      "reward": 0.0
     },
     {
       "id": "5011404d-a619-47f1-8981-a0204f4206a4",
@@ -9623,8 +9633,8 @@
               "info": "Check whether a continuous physical path reaches the main built-up area.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -9639,8 +9649,8 @@
               "info": "Check whether a continuous physical path reaches another cluster within the site.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -9654,8 +9664,8 @@
               "info": "Count parking lots visible in the tile.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -9669,8 +9679,8 @@
               "info": "Count harbor features visible in the tile.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -9683,8 +9693,8 @@
               "info": "Assess the built-up density classification of the site.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -9697,8 +9707,8 @@
               "info": "Assess the green/environmental coverage classification of the site.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           }
         ],
         "nl_assertions": [
@@ -10543,7 +10553,8 @@
         }
       ],
       "trial": 0,
-      "seed": 626729
+      "seed": 626729,
+      "reward": 0.0
     },
     {
       "id": "2763444c-b07f-4231-99b2-e6b297a186b5",
@@ -10588,8 +10599,8 @@
               "info": "Check whether a continuous physical path exists for access to the landing zone.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -10603,8 +10614,8 @@
               "info": "Count hospitals visible at the site.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -10618,8 +10629,8 @@
               "info": "Count bridges visible at the site.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -10632,8 +10643,8 @@
               "info": "Assess whether the site is sparse, moderate, or dense.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -10646,8 +10657,8 @@
               "info": "Assess the green/environmental coverage category.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           }
         ],
         "nl_assertions": [
@@ -11405,7 +11416,8 @@
         }
       ],
       "trial": 0,
-      "seed": 626729
+      "seed": 626729,
+      "reward": 0.0
     },
     {
       "id": "fdf671be-a198-459b-965e-1f3eac9b0b83",
@@ -11448,8 +11460,8 @@
               "info": "Classify the site\u2019s land use to determine whether it is natural or developed.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -11463,8 +11475,8 @@
               "info": "Count parking lots as a sign of incompatible encroachment.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -11477,8 +11489,8 @@
               "info": "Assess whether the site is low-density or shows stronger built-up pressure.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           }
         ],
         "nl_assertions": [
@@ -11991,7 +12003,8 @@
         }
       ],
       "trial": 0,
-      "seed": 626729
+      "seed": 626729,
+      "reward": 0.0
     },
     {
       "id": "a18aefe1-3d94-4594-b1f4-5137edb96594",
@@ -12034,8 +12047,8 @@
               "info": "Classify the site\u2019s land-use type from the current satellite image.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -12048,8 +12061,8 @@
               "info": "Assess how built-up the site appears and return a density category.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           }
         ],
         "nl_assertions": [
@@ -12389,7 +12402,8 @@
         }
       ],
       "trial": 0,
-      "seed": 626729
+      "seed": 626729,
+      "reward": 0.0
     },
     {
       "id": "0e5303b1-d922-4ec4-9103-1fa89d09e1bd",
@@ -12432,8 +12446,8 @@
               "info": "Classify the site\u2019s land use to determine whether it remains rural/agricultural.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -12447,8 +12461,8 @@
               "info": "Count Storage Tanks as a possible sign of rural-to-industrial encroachment.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -12462,8 +12476,8 @@
               "info": "Count Solar Panels as a possible sign of built development pressure.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -12476,8 +12490,8 @@
               "info": "Assess whether the site is visually sparse, moderate, or dense to support encroachment evaluation.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -12490,8 +12504,8 @@
               "info": "Assess green/environmental coverage to support the boundary compliance review.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           }
         ],
         "nl_assertions": [
@@ -13010,7 +13024,8 @@
         }
       ],
       "trial": 0,
-      "seed": 626729
+      "seed": 626729,
+      "reward": 0.0
     },
     {
       "id": "2f5b05db-b329-4ee1-a2ea-7861a4b489fe",
@@ -13023,7 +13038,7 @@
       "agent_cost": 0.0028244,
       "user_cost": 0.0011764,
       "reward_info": {
-        "reward": 0.0,
+        "reward": 1.0,
         "db_check": null,
         "env_assertions": null,
         "action_checks": [
@@ -13054,8 +13069,8 @@
               "info": "Count the number of schools visible in the image.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -13069,8 +13084,8 @@
               "info": "Count the number of ground track fields visible in the image.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           }
         ],
         "nl_assertions": [
@@ -13407,7 +13422,8 @@
         }
       ],
       "trial": 0,
-      "seed": 626729
+      "seed": 626729,
+      "reward": 1.0
     },
     {
       "id": "b9bdcf74-3b2b-4da4-b488-4fea7876cf67",
@@ -13450,8 +13466,8 @@
               "info": "Classify the land use of the site from the current image.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -13465,8 +13481,8 @@
               "info": "Count visible Parking Lot features to assess encroachment pressure.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -13479,8 +13495,8 @@
               "info": "Assess the green/environmental coverage of the site.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -13493,8 +13509,8 @@
               "info": "Estimate the visual built-structure density of the site.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           }
         ],
         "nl_assertions": [
@@ -14032,7 +14048,8 @@
         }
       ],
       "trial": 0,
-      "seed": 626729
+      "seed": 626729,
+      "reward": 0.0
     },
     {
       "id": "5d7ba20b-7f97-4f59-bb06-f332eb0797d4",
@@ -14077,8 +14094,8 @@
               "info": "Check whether a continuous physical path exists between the two described points.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -14092,8 +14109,8 @@
               "info": "Count visible Parking Lots for possible rescue staging.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           }
         ],
         "nl_assertions": [
@@ -14490,7 +14507,8 @@
         }
       ],
       "trial": 0,
-      "seed": 626729
+      "seed": 626729,
+      "reward": 0.0
     },
     {
       "id": "a71c2318-ed6f-431d-98c8-7e893a36b083",
@@ -14533,8 +14551,8 @@
               "info": "Assess the site's green/environmental coverage category.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -14547,8 +14565,8 @@
               "info": "Estimate the site's carbon emission index from the current image.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -14561,8 +14579,8 @@
               "info": "Classify the site's land-use type.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -14575,8 +14593,8 @@
               "info": "Assess the built-density classification of the site.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -14590,8 +14608,8 @@
               "info": "Count parking lots visible at the site.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -15283,7 +15301,8 @@
         }
       ],
       "trial": 0,
-      "seed": 626729
+      "seed": 626729,
+      "reward": 0.0
     },
     {
       "id": "4026c132-aa7b-4ace-99f8-9e2dd83c5ea4",
@@ -15296,7 +15315,7 @@
       "agent_cost": 0.0043668,
       "user_cost": 0.0022644,
       "reward_info": {
-        "reward": 0.0,
+        "reward": 1.0,
         "db_check": null,
         "env_assertions": null,
         "action_checks": [
@@ -15327,8 +15346,8 @@
               "info": "Count the number of solar panels visible in the image.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -15342,8 +15361,8 @@
               "info": "Count the number of windmills visible in the image.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -15357,8 +15376,8 @@
               "info": "Confirm whether any stadium is visible; expected to be zero.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           }
         ],
         "nl_assertions": [
@@ -15923,7 +15942,8 @@
         }
       ],
       "trial": 0,
-      "seed": 626729
+      "seed": 626729,
+      "reward": 1.0
     },
     {
       "id": "23a3c00e-9215-4853-9932-5824dd753cb2",
@@ -15936,7 +15956,7 @@
       "agent_cost": 0.004148,
       "user_cost": 0.002104,
       "reward_info": {
-        "reward": 0.0,
+        "reward": 1.0,
         "db_check": null,
         "env_assertions": null,
         "action_checks": [
@@ -15996,8 +16016,8 @@
               "info": "Classify the current land use of the site.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -16010,8 +16030,8 @@
               "info": "Assess the current built-density classification of the site.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -16025,8 +16045,8 @@
               "info": "Count the visible dams at the site.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -16040,8 +16060,8 @@
               "info": "Count the visible parking lots at the site.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           }
         ],
         "nl_assertions": [
@@ -16585,7 +16605,8 @@
         }
       ],
       "trial": 0,
-      "seed": 626729
+      "seed": 626729,
+      "reward": 1.0
     },
     {
       "id": "6ed70162-065c-47f8-8ea6-37cbef5b2b69",
@@ -16628,8 +16649,8 @@
               "info": "Classify the site's land use from the current image.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -16642,8 +16663,8 @@
               "info": "Determine the site's green/environmental coverage category.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -16656,8 +16677,8 @@
               "info": "Estimate the site's carbon emission index from the current image.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           }
         ],
         "nl_assertions": [
@@ -17110,7 +17131,8 @@
         }
       ],
       "trial": 0,
-      "seed": 626729
+      "seed": 626729,
+      "reward": 0.0
     },
     {
       "id": "ca9ea29c-8b42-4107-9cae-7a804b3f78c6",
@@ -17153,8 +17175,8 @@
               "info": "Classify the first site's land use.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -17167,8 +17189,8 @@
               "info": "Assess the first site's built density.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -17181,8 +17203,8 @@
               "info": "Assess the first site's green/environmental coverage.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -17196,8 +17218,8 @@
               "info": "Count parking lots visible at the first site.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -17225,8 +17247,8 @@
               "info": "Classify the second site's land use.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -17239,8 +17261,8 @@
               "info": "Assess the second site's built density.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -17253,8 +17275,8 @@
               "info": "Assess the second site's green/environmental coverage.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -17268,8 +17290,8 @@
               "info": "Count parking lots visible at the second site.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           }
         ],
         "nl_assertions": [
@@ -17887,7 +17909,8 @@
         }
       ],
       "trial": 0,
-      "seed": 626729
+      "seed": 626729,
+      "reward": 0.0
     },
     {
       "id": "d1385233-6c36-4ed2-a26f-4180a97541a3",
@@ -17900,7 +17923,7 @@
       "agent_cost": 0.0036691999999999996,
       "user_cost": 0.0014460000000000002,
       "reward_info": {
-        "reward": 0.0,
+        "reward": 1.0,
         "db_check": null,
         "env_assertions": null,
         "action_checks": [
@@ -17930,8 +17953,8 @@
               "info": "Classify the site\u2019s land-use type from the satellite image.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -17944,8 +17967,8 @@
               "info": "Assess the site\u2019s settlement density category for cross-validation.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -17958,8 +17981,8 @@
               "info": "Assess the green/environmental coverage category for additional context.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           }
         ],
         "nl_assertions": [
@@ -18383,7 +18406,8 @@
         }
       ],
       "trial": 0,
-      "seed": 626729
+      "seed": 626729,
+      "reward": 1.0
     },
     {
       "id": "88c3626d-0b88-4b8c-84fa-d7d5739f9a7a",
@@ -18396,7 +18420,7 @@
       "agent_cost": 0.00299,
       "user_cost": 0.0016668,
       "reward_info": {
-        "reward": 0.0,
+        "reward": 1.0,
         "db_check": null,
         "env_assertions": null,
         "action_checks": [
@@ -18426,8 +18450,8 @@
               "info": "Classify the site\u2019s land use from the current image.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -18440,8 +18464,8 @@
               "info": "Assess settlement density for route-planning context.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -18454,8 +18478,8 @@
               "info": "Assess vegetation/green coverage level for terrain interpretation.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           }
         ],
         "nl_assertions": [
@@ -18908,7 +18932,8 @@
         }
       ],
       "trial": 0,
-      "seed": 626729
+      "seed": 626729,
+      "reward": 1.0
     },
     {
       "id": "a35017de-2ca7-435e-8153-d4004ef6ee19",
@@ -18952,8 +18977,8 @@
               "info": "Count the number of stadiums visible in the image.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -18967,8 +18992,8 @@
               "info": "Count the number of parking lots visible in the image.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -18982,8 +19007,8 @@
               "info": "Count the number of tennis courts visible in the image.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -18997,8 +19022,8 @@
               "info": "Count the number of soccer ball fields visible in the image.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           }
         ],
         "nl_assertions": [
@@ -19612,7 +19637,8 @@
         }
       ],
       "trial": 0,
-      "seed": 626729
+      "seed": 626729,
+      "reward": 0.0
     },
     {
       "id": "bae1fdc7-0476-4f38-ab00-f7ff93ace2f2",
@@ -19655,8 +19681,8 @@
               "info": "Assess the site's green coverage category from the current image.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -19669,8 +19695,8 @@
               "info": "Estimate the site's carbon emission index from the current image.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -19683,8 +19709,8 @@
               "info": "Optionally classify the site's land use for supporting context.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -19698,8 +19724,8 @@
               "info": "Count visible parking lots to support the built-environment check.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -20219,7 +20245,8 @@
         }
       ],
       "trial": 0,
-      "seed": 626729
+      "seed": 626729,
+      "reward": 0.0
     },
     {
       "id": "1a545816-5440-4d7b-87f3-7bcd6f6e943e",
@@ -20263,8 +20290,8 @@
               "info": "Detect and count harbor infrastructure in the satellite image.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -20278,8 +20305,8 @@
               "info": "Detect and count bridge infrastructure in the satellite image.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           }
         ],
         "nl_assertions": [
@@ -20621,7 +20648,8 @@
         }
       ],
       "trial": 0,
-      "seed": 626729
+      "seed": 626729,
+      "reward": 0.0
     },
     {
       "id": "9c95b1e0-a7ef-4ea1-9f7a-4c4ce6e30134",
@@ -20634,7 +20662,7 @@
       "agent_cost": 0.008073199999999999,
       "user_cost": 0.0021732,
       "reward_info": {
-        "reward": 0.0,
+        "reward": 1.0,
         "db_check": null,
         "env_assertions": null,
         "action_checks": [
@@ -20664,8 +20692,8 @@
               "info": "Determine the site's land-use classification.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -20678,8 +20706,8 @@
               "info": "Assess whether the built environment is Sparse, Moderate, or Dense.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -20692,8 +20720,8 @@
               "info": "Assess whether the green/environmental coverage is Low, Medium, or High.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -20708,8 +20736,8 @@
               "info": "Check whether a continuous access path exists into the site.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -20723,8 +20751,8 @@
               "info": "Count visible parking lots for vehicle staging capacity.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           }
         ],
         "nl_assertions": [
@@ -21460,7 +21488,8 @@
         }
       ],
       "trial": 0,
-      "seed": 626729
+      "seed": 626729,
+      "reward": 1.0
     },
     {
       "id": "b3b287c2-6d80-48c5-a767-3093fcfa00f0",
@@ -21503,8 +21532,8 @@
               "info": "Classify the land use of the first parcel.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -21532,8 +21561,8 @@
               "info": "Classify the land use of the second parcel.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -21546,8 +21575,8 @@
               "info": "Assess the density category for the first parcel.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -21560,8 +21589,8 @@
               "info": "Assess the density category for the second parcel.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -21574,8 +21603,8 @@
               "info": "Assess green coverage for the first parcel.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -21588,8 +21617,8 @@
               "info": "Assess green coverage for the second parcel.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -22445,7 +22474,8 @@
         }
       ],
       "trial": 0,
-      "seed": 626729
+      "seed": 626729,
+      "reward": 0.0
     }
   ]
 }

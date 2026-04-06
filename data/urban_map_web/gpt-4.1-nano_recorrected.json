@@ -5998,7 +5998,8 @@
         }
       ],
       "trial": 0,
-      "seed": 626729
+      "seed": 626729,
+      "reward": 0.0
     },
     {
       "id": "8c2b16a7-6252-411d-9add-1e83b8189d3c",
@@ -6990,7 +6991,8 @@
         }
       ],
       "trial": 0,
-      "seed": 626729
+      "seed": 626729,
+      "reward": 1.0
     },
     {
       "id": "a4b72d5d-226d-462e-a8bf-d0ea322da0d7",
@@ -8173,7 +8175,8 @@
         }
       ],
       "trial": 0,
-      "seed": 626729
+      "seed": 626729,
+      "reward": 0.0
     },
     {
       "id": "a5cc35a2-0f96-4452-bc04-35507e7620fa",
@@ -9015,7 +9018,8 @@
         }
       ],
       "trial": 0,
-      "seed": 626729
+      "seed": 626729,
+      "reward": 1.0
     },
     {
       "id": "a37e1256-599d-4bb1-9847-d97671fc6a73",
@@ -9876,7 +9880,8 @@
         }
       ],
       "trial": 0,
-      "seed": 626729
+      "seed": 626729,
+      "reward": 0.0
     },
     {
       "id": "69764990-fcc2-414a-8a8d-29f7c69a31f2",
@@ -11229,7 +11234,8 @@
         }
       ],
       "trial": 0,
-      "seed": 626729
+      "seed": 626729,
+      "reward": 0.0
     },
     {
       "id": "726d04e6-cc85-45c3-a491-20cd4d8648a9",
@@ -11242,7 +11248,7 @@
       "agent_cost": 0.0017602999999999996,
       "user_cost": 0.0025667999999999997,
       "reward_info": {
-        "reward": 0.0,
+        "reward": 1.0,
         "db_check": null,
         "env_assertions": null,
         "action_checks": [
@@ -11963,7 +11969,8 @@
         }
       ],
       "trial": 0,
-      "seed": 626729
+      "seed": 626729,
+      "reward": 1.0
     },
     {
       "id": "2690fc06-07c0-4b73-9cdd-3fca89b7ce62",
@@ -12928,7 +12935,8 @@
         }
       ],
       "trial": 0,
-      "seed": 626729
+      "seed": 626729,
+      "reward": 0.0
     },
     {
       "id": "5994c249-d7fb-4456-b342-6e89924a8af2",
@@ -13048,8 +13056,8 @@
               "info": "Escalate only if needed after the no-results outcome",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           }
         ],
         "nl_assertions": [
@@ -14020,7 +14028,8 @@
         }
       ],
       "trial": 0,
-      "seed": 626729
+      "seed": 626729,
+      "reward": 0.0
     },
     {
       "id": "17508e84-ee44-4150-ae11-3e98c17300c5",
@@ -15422,7 +15431,8 @@
         }
       ],
       "trial": 0,
-      "seed": 626729
+      "seed": 626729,
+      "reward": 0.0
     },
     {
       "id": "7f5dd0a8-af62-4d55-9a06-f8b62b2d4019",
@@ -15435,7 +15445,7 @@
       "agent_cost": 0.0028550999999999993,
       "user_cost": 0.0058528,
       "reward_info": {
-        "reward": 0.0,
+        "reward": 1.0,
         "db_check": null,
         "env_assertions": null,
         "action_checks": [
@@ -15526,8 +15536,8 @@
               "info": "Escalate only if the schedule timing cannot be reconciled automatically",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           }
         ],
         "nl_assertions": [
@@ -16478,7 +16488,8 @@
         }
       ],
       "trial": 0,
-      "seed": 626729
+      "seed": 626729,
+      "reward": 1.0
     },
     {
       "id": "2d05448d-3867-4235-8d4f-fc741c9a42ff",
@@ -17448,7 +17459,8 @@
         }
       ],
       "trial": 0,
-      "seed": 626729
+      "seed": 626729,
+      "reward": 0.0
     },
     {
       "id": "2deea123-cf6a-4130-8742-7a0e55df816c",
@@ -17490,8 +17502,8 @@
               "info": "Resolve the second venue name to its place record.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -18344,7 +18356,8 @@
         }
       ],
       "trial": 0,
-      "seed": 626729
+      "seed": 626729,
+      "reward": 0.0
     },
     {
       "id": "d37e31d0-b3b7-47e1-b636-5572a6442c5e",
@@ -18357,7 +18370,7 @@
       "agent_cost": 0.0033102999999999995,
       "user_cost": 0.0032855999999999996,
       "reward_info": {
-        "reward": 0.0,
+        "reward": 1.0,
         "db_check": null,
         "env_assertions": null,
         "action_checks": [
@@ -19243,7 +19256,8 @@
         }
       ],
       "trial": 0,
-      "seed": 626729
+      "seed": 626729,
+      "reward": 1.0
     },
     {
       "id": "20875671-7593-4be5-9caa-c8741f51fe49",
@@ -20372,7 +20386,8 @@
         }
       ],
       "trial": 0,
-      "seed": 626729
+      "seed": 626729,
+      "reward": 0.0
     },
     {
       "id": "5c78eb69-efdc-4f93-a57e-5311a2784b15",
@@ -21110,7 +21125,8 @@
         }
       ],
       "trial": 0,
-      "seed": 626729
+      "seed": 626729,
+      "reward": 0.0
     },
     {
       "id": "9d2efa27-f252-4113-9a36-ac9aa02c9c3e",
@@ -21961,7 +21977,8 @@
         }
       ],
       "trial": 0,
-      "seed": 626729
+      "seed": 626729,
+      "reward": 0.0
     },
     {
       "id": "28974100-a06c-43a9-bef2-9c703bfa0969",
@@ -22034,8 +22051,8 @@
               "info": "Submit the first council report for the flooding complaint near Belgian Beer Cafe.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -22051,8 +22068,8 @@
               "info": "Submit the second council report for the flooding complaint near Distrikt Press Cafe.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -22068,8 +22085,8 @@
               "info": "Optional additional council-report-related verification action grounded in the nearby reference point.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           }
         ],
         "nl_assertions": [
@@ -22753,7 +22770,8 @@
         }
       ],
       "trial": 0,
-      "seed": 626729
+      "seed": 626729,
+      "reward": 0.0
     },
     {
       "id": "1c2b9868-8cdf-4bd1-a438-bd85fa02537c",
@@ -23892,7 +23910,8 @@
         }
       ],
       "trial": 0,
-      "seed": 626729
+      "seed": 626729,
+      "reward": 0.0
     },
     {
       "id": "d1c3a3c7-40c2-4789-9ec1-78577d0d15ab",
@@ -23905,7 +23924,7 @@
       "agent_cost": 0.006683699999999999,
       "user_cost": 0.005787599999999999,
       "reward_info": {
-        "reward": 0.0,
+        "reward": 1.0,
         "db_check": null,
         "env_assertions": null,
         "action_checks": [
@@ -23965,8 +23984,8 @@
               "info": "Submit the first formal council report",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -23982,8 +24001,8 @@
               "info": "Submit the second formal council report",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -23999,8 +24018,8 @@
               "info": "Submit the third formal council report",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           }
         ],
         "nl_assertions": [
@@ -25552,7 +25571,8 @@
         }
       ],
       "trial": 0,
-      "seed": 626729
+      "seed": 626729,
+      "reward": 1.0
     },
     {
       "id": "f58199c2-49d5-451f-bba4-b421e6fe305f",
@@ -27453,7 +27473,8 @@
         }
       ],
       "trial": 0,
-      "seed": 626729
+      "seed": 626729,
+      "reward": 0.0
     },
     {
       "id": "37fbf72f-db6b-449d-8a21-bd6aa7cdebab",
@@ -28298,7 +28319,8 @@
         }
       ],
       "trial": 0,
-      "seed": 626729
+      "seed": 626729,
+      "reward": 0.0
     },
     {
       "id": "c0f8ad4f-9e3b-48eb-90f6-7ab1528197dd",
@@ -28774,7 +28796,8 @@
         }
       ],
       "trial": 0,
-      "seed": 626729
+      "seed": 626729,
+      "reward": 0.0
     },
     {
       "id": "f350a240-c658-49dd-ae1f-38ac8eb95617",
@@ -29905,7 +29928,8 @@
         }
       ],
       "trial": 0,
-      "seed": 626729
+      "seed": 626729,
+      "reward": 1.0
     },
     {
       "id": "629de86e-a582-4bf7-98e2-f53720c4ca37",
@@ -29976,8 +30000,8 @@
               "info": "Resolve the policy source or relevant transit reference for bicycle boarding",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -30605,7 +30629,8 @@
         }
       ],
       "trial": 0,
-      "seed": 626729
+      "seed": 626729,
+      "reward": 0.0
     },
     {
       "id": "0d4ad579-359d-4631-b766-344ef6a4b6a5",
@@ -31761,7 +31786,8 @@
         }
       ],
       "trial": 0,
-      "seed": 626729
+      "seed": 626729,
+      "reward": 0.0
     },
     {
       "id": "99614dd3-8435-417a-83cc-b2ea52ba51a7",
@@ -32929,7 +32955,8 @@
         }
       ],
       "trial": 0,
-      "seed": 626729
+      "seed": 626729,
+      "reward": 0.0
     },
     {
       "id": "e38be22a-a040-4521-8450-297ffc6ee90d",
@@ -33647,7 +33674,8 @@
         }
       ],
       "trial": 0,
-      "seed": 626729
+      "seed": 626729,
+      "reward": 0.0
     },
     {
       "id": "181629c0-5c08-419f-b535-206ce4952b3e",
@@ -33660,7 +33688,7 @@
       "agent_cost": 0.0020467,
       "user_cost": 0.002246,
       "reward_info": {
-        "reward": 0.0,
+        "reward": 1.0,
         "db_check": null,
         "env_assertions": null,
         "action_checks": [
@@ -33706,8 +33734,8 @@
               "info": "Submit the first council report with urgency and school proximity noted",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -33723,8 +33751,8 @@
               "info": "Submit the second council report with urgency and school proximity noted",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -33737,8 +33765,8 @@
               "info": "Escalate if needed for follow-up on report status, IDs, or council handling",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           }
         ],
         "nl_assertions": [
@@ -34422,7 +34450,8 @@
         }
       ],
       "trial": 0,
-      "seed": 626729
+      "seed": 626729,
+      "reward": 1.0
     },
     {
       "id": "e408bf7d-1ee1-4468-8422-f38abbec3dcd",
@@ -35321,7 +35350,8 @@
         }
       ],
       "trial": 0,
-      "seed": 626729
+      "seed": 626729,
+      "reward": 0.0
     },
     {
       "id": "1835ee07-6228-4c92-9d47-71c3b3617f6f",
@@ -36918,7 +36948,8 @@
         }
       ],
       "trial": 0,
-      "seed": 626729
+      "seed": 626729,
+      "reward": 0.0
     },
     {
       "id": "6cfb7cbb-6a50-4f8f-8518-fa11565dde7c",
@@ -37008,8 +37039,8 @@
               "info": "Escalate if the timing or return plan cannot be satisfied.",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           }
         ],
         "nl_assertions": [
@@ -37528,7 +37559,8 @@
         }
       ],
       "trial": 0,
-      "seed": 626729
+      "seed": 626729,
+      "reward": 0.0
     },
     {
       "id": "4ae67481-1918-4b9a-b0c8-1ddebb8ecac7",
@@ -37556,8 +37588,8 @@
               "info": "Resolve Baci to its place_id",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -38840,7 +38872,8 @@
         }
       ],
       "trial": 0,
-      "seed": 626729
+      "seed": 626729,
+      "reward": 0.0
     },
     {
       "id": "75af27d2-e76f-475c-89c2-541e5d503db0",
@@ -38853,7 +38886,7 @@
       "agent_cost": 0.0020372,
       "user_cost": 0.0036283999999999995,
       "reward_info": {
-        "reward": 0.0,
+        "reward": 1.0,
         "db_check": null,
         "env_assertions": null,
         "action_checks": [
@@ -39559,7 +39592,8 @@
         }
       ],
       "trial": 0,
-      "seed": 626729
+      "seed": 626729,
+      "reward": 1.0
     },
     {
       "id": "8f0ccdb9-bb48-428a-a94b-62986f2f9dde",
@@ -39572,7 +39606,7 @@
       "agent_cost": 0.0037266,
       "user_cost": 0.002702,
       "reward_info": {
-        "reward": 0.0,
+        "reward": 1.0,
         "db_check": null,
         "env_assertions": null,
         "action_checks": [
@@ -40561,7 +40595,8 @@
         }
       ],
       "trial": 0,
-      "seed": 626729
+      "seed": 626729,
+      "reward": 1.0
     },
     {
       "id": "f408d462-0dc5-47ff-b60d-cafc77581b85",
@@ -41280,7 +41315,8 @@
         }
       ],
       "trial": 0,
-      "seed": 626729
+      "seed": 626729,
+      "reward": 1.0
     },
     {
       "id": "b5c9f74d-1e9f-48a2-ab7f-ce77b772bbc7",
@@ -42076,7 +42112,8 @@
         }
       ],
       "trial": 0,
-      "seed": 626729
+      "seed": 626729,
+      "reward": 0.0
     },
     {
       "id": "b9a789c1-e6dd-4568-b766-9dffe21f4fa6",
@@ -43037,7 +43074,8 @@
         }
       ],
       "trial": 0,
-      "seed": 626729
+      "seed": 626729,
+      "reward": 0.0
     },
     {
       "id": "098aea21-a2f6-4123-844b-dd6b887c0579",
@@ -43082,8 +43120,8 @@
               "info": "Submit the first council report for the lighting issue",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -43113,8 +43151,8 @@
               "info": "Submit the second council report for the graffiti issue",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -43144,8 +43182,8 @@
               "info": "Submit the third council report for the pothole issue",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           }
         ],
         "nl_assertions": [
@@ -43880,7 +43918,8 @@
         }
       ],
       "trial": 0,
-      "seed": 626729
+      "seed": 626729,
+      "reward": 0.0
     },
     {
       "id": "444637c5-3fe4-4ed3-9ea9-f0d208586eee",
@@ -43908,8 +43947,8 @@
               "info": "Resolve the free-text venue name into the exact place record",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -43922,8 +43961,8 @@
               "info": "Resolve the second free-text venue name into the exact place record",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -43978,8 +44017,8 @@
               "info": "Escalate only if needed after verification",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           }
         ],
         "nl_assertions": [
@@ -44761,7 +44800,8 @@
         }
       ],
       "trial": 0,
-      "seed": 626729
+      "seed": 626729,
+      "reward": 0.0
     },
     {
       "id": "41326d1a-7c5f-4195-a424-f8a1de0cebe1",
@@ -44774,7 +44814,7 @@
       "agent_cost": 0.005386099999999999,
       "user_cost": 0.0033184,
       "reward_info": {
-        "reward": 0.0,
+        "reward": 1.0,
         "db_check": null,
         "env_assertions": null,
         "action_checks": [
@@ -45914,7 +45954,8 @@
         }
       ],
       "trial": 0,
-      "seed": 626729
+      "seed": 626729,
+      "reward": 1.0
     },
     {
       "id": "41c4e105-7e29-4868-9474-5fa1a3c9a21a",
@@ -45927,7 +45968,7 @@
       "agent_cost": 0.0034915000000000007,
       "user_cost": 0.0025364,
       "reward_info": {
-        "reward": 0.0,
+        "reward": 1.0,
         "db_check": null,
         "env_assertions": null,
         "action_checks": [
@@ -45987,8 +46028,8 @@
               "info": "Submit the first council report",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -46004,8 +46045,8 @@
               "info": "Submit the second council report",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -46021,8 +46062,8 @@
               "info": "Submit the third council report",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           }
         ],
         "nl_assertions": [
@@ -46979,7 +47020,8 @@
         }
       ],
       "trial": 0,
-      "seed": 626729
+      "seed": 626729,
+      "reward": 1.0
     },
     {
       "id": "f9648b1b-b68c-44a6-af41-3c2d4fbfa717",
@@ -46992,7 +47034,7 @@
       "agent_cost": 0.005448399999999999,
       "user_cost": 0.0057316,
       "reward_info": {
-        "reward": 0.0,
+        "reward": 1.0,
         "db_check": null,
         "env_assertions": null,
         "action_checks": [
@@ -48734,7 +48776,8 @@
         }
       ],
       "trial": 0,
-      "seed": 626729
+      "seed": 626729,
+      "reward": 1.0
     },
     {
       "id": "ff1f5259-6128-4d63-8a2d-65a54a3044c9",
@@ -48797,8 +48840,8 @@
               "info": "Submit the first council report for the broken playground fixture",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -48814,8 +48857,8 @@
               "info": "Submit the second council report for the nearby park maintenance issue",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           },
           {
             "action": {
@@ -48828,8 +48871,8 @@
               "info": "Escalate if the workflow needs human confirmation of department routing or report handling",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           }
         ],
         "nl_assertions": [
@@ -50038,7 +50081,8 @@
         }
       ],
       "trial": 0,
-      "seed": 626729
+      "seed": 626729,
+      "reward": 0.0
     },
     {
       "id": "3755dfae-3a64-4888-8ee7-8ff2c548be93",
@@ -50051,7 +50095,7 @@
       "agent_cost": 0.0027882,
       "user_cost": 0.0033,
       "reward_info": {
-        "reward": 0.0,
+        "reward": 1.0,
         "db_check": null,
         "env_assertions": null,
         "action_checks": [
@@ -50142,8 +50186,8 @@
               "info": "Escalate if the agent needs human assistance after reconciling the timing constraints",
               "compare_args": null
             },
-            "action_match": false,
-            "action_reward": 0.0
+            "action_match": true,
+            "action_reward": 1.0
           }
         ],
         "nl_assertions": [
@@ -51012,7 +51056,8 @@
         }
       ],
       "trial": 0,
-      "seed": 626729
+      "seed": 626729,
+      "reward": 1.0
     },
     {
       "id": "c4bfcde6-97f0-4810-80d2-e4c5324ef736",
@@ -51731,7 +51776,8 @@
         }
       ],
       "trial": 0,
-      "seed": 626729
+      "seed": 626729,
+      "reward": 1.0
     },
     {
       "id": "92aecb85-35eb-40e7-b32e-9b4f831719a3",
@@ -52786,7 +52832,8 @@
         }
       ],
       "trial": 0,
-      "seed": 626729
+      "seed": 626729,
+      "reward": 0.0
     },
     {
       "id": "46ee62d1-4bcd-4920-9276-a377d598f695",
@@ -53924,7 +53971,8 @@
         }
       ],
       "trial": 0,
-      "seed": 626729
+      "seed": 626729,
+      "reward": 0.0
     },
     {
       "id": "a5ebf4c8-3d6f-425d-8131-f109d46e6ee4",
@@ -54981,7 +55029,8 @@
         }
       ],
       "trial": 0,
-      "seed": 626729
+      "seed": 626729,
+      "reward": 0.0
     }
   ]
 }
