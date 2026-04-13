@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   let currentDomain = 'urban_map_web';
-  let sortColumn = 'pass1_eff';
+  let sortColumn = 'pass1';
   let sortDirection = 'desc';
 
   const tbody = document.getElementById('leaderboard-body');
@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
         sortDirection = sortDirection === 'desc' ? 'asc' : 'desc';
       } else {
         sortColumn = column;
-        sortDirection = 'desc';
+        sortDirection = column === 'avg_step_succ' ? 'asc' : 'desc';
       }
       
       // Update header UI
@@ -86,9 +86,34 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function renderTable() {
     let data = [...(leaderboardData[currentDomain] || [])];
+
+    const compareAvgStepAsc = (a, b) => {
+      const stepA = a.avg_step_succ;
+      const stepB = b.avg_step_succ;
+      const aMissing = stepA === null || stepA === undefined || Number.isNaN(stepA);
+      const bMissing = stepB === null || stepB === undefined || Number.isNaN(stepB);
+      if (aMissing && bMissing) return 0;
+      if (aMissing) return 1;
+      if (bMissing) return -1;
+      if (stepA === stepB) return 0;
+      return stepA < stepB ? -1 : 1;
+    };
     
     // Sort logic
     data.sort((a, b) => {
+      if (sortColumn === 'pass1') {
+        if (a.pass1 === b.pass1) {
+          return compareAvgStepAsc(a, b);
+        }
+        const multiplier = sortDirection === 'desc' ? -1 : 1;
+        return (a.pass1 < b.pass1 ? -1 : 1) * multiplier;
+      }
+
+      if (sortColumn === 'avg_step_succ') {
+        const base = compareAvgStepAsc(a, b);
+        return sortDirection === 'asc' ? base : -base;
+      }
+
       let valA = a[sortColumn];
       let valB = b[sortColumn];
       
@@ -124,10 +149,10 @@ document.addEventListener('DOMContentLoaded', () => {
       tr.innerHTML = `
         <td class="rank-cell ${rankClass}">${rankHtml}</td>
         <td class="model-name">${model.model_name}</td>
-        <td class="metric-value"><b>${(model.pass1_eff * 100).toFixed(1)}%</b></td>
         <td class="metric-value">${(model.pass1 * 100).toFixed(1)}%</td>
         <td class="metric-value">${(model.average_process_accuracy * 100).toFixed(1)}%</td>
         <td class="metric-value">${(model.average_outcome_accuracy * 100).toFixed(1)}%</td>
+        <td class="metric-value"><b>${model.avg_step_succ == null || Number.isNaN(model.avg_step_succ) ? '-' : model.avg_step_succ.toFixed(2)}</b></td>
         <td><a href="${viewerUrl}" style="text-decoration:none; color:#0ea5e9; font-weight:600;">View Trajectories &rarr;</a></td>
       `;
       

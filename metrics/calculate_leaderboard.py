@@ -90,13 +90,31 @@ def calculate_manual_reward(action_accuracy, nl_accuracy, action_threshold=0.8, 
     """
     return (action_accuracy >= action_threshold) and (nl_accuracy >= nl_threshold)
 
-def compute_turn_act(messages):
-    act = 0
+def compute_execution_steps(messages):
+    """
+    Count agent execution steps K_i for one episode.
+    A step is any assistant-generated action:
+      - each tool/API invocation
+      - each natural-language response to user
+    """
+    steps = 0
     for msg in messages:
-        if msg.get('role') == 'assistant':
-            if not msg.get('tool_calls') and msg.get('content'):
-                act += 1
-    return max(1, act)  # Ensure non-zero to avoid div/0
+        if msg.get('role') != 'assistant':
+            continue
+
+        tool_calls = msg.get('tool_calls') or []
+        if isinstance(tool_calls, list):
+            steps += len(tool_calls)
+
+        content = msg.get('content')
+        if isinstance(content, str):
+            if content.strip():
+                steps += 1
+        elif content:
+            # Some providers may return structured content arrays/objects.
+            steps += 1
+
+    return max(1, steps)
 
 def get_recorrected_filename(source_path):
     stem, ext = os.path.splitext(os.path.basename(source_path))
@@ -126,18 +144,16 @@ def process_domain(domain_slug, action_threshold=0.8, nl_threshold=0.8):
         info = data.get('info', {})
         agent_info = info.get('agent_info', {})
         model_name = agent_info.get('llm', os.path.basename(jpath).replace('.json', ''))
-        
-        tasks_map = {t['id']: t for t in data.get('tasks', [])}
+
         simulations = data.get('simulations', [])
         
         total_action_score = 0
         total_nl_accuracy = 0
         pass_count = 0
-        ce_sum = 0
+        step_sum_success = 0
         overwritten_rewards = 0
         
         for sim in simulations:
-            task_id = sim.get('task_id')
             reward_info = sim.get('reward_info')
             if not isinstance(reward_info, dict):
                 reward_candidate = sim.get('reward')
@@ -164,24 +180,19 @@ def process_domain(domain_slug, action_threshold=0.8, nl_threshold=0.8):
             
             if is_success:
                 pass_count += 1
-                
-                # Compute conditional efficiency
-                task = tasks_map.get(task_id, {})
-                instruction = task.get('user_scenario', {}).get('instructions', {}).get('reason_for_call', '')
-                turn_opt = max(1, instruction.count('Step'))
-                turn_act = compute_turn_act(sim.get('messages', []))
-                
-                ce_sum += (float(turn_opt) / float(turn_act))
+
+                step_count = compute_execution_steps(sim.get('messages', []))
+                step_sum_success += step_count
         
         num_sims = len(simulations)
         if num_sims > 0:
             avg_action_score = total_action_score / num_sims
             avg_nl_accuracy = total_nl_accuracy / num_sims
             pass1 = float(pass_count) / num_sims
-            ce_avg = ce_sum / pass_count if pass_count > 0 else 0.0
-            pass1_eff = pass1 * ce_avg
+            avg_step_succ = (float(step_sum_success) / pass_count) if pass_count > 0 else None
         else:
-            avg_action_score = avg_nl_accuracy = pass1 = pass1_eff = 0.0
+            avg_action_score = avg_nl_accuracy = pass1 = 0.0
+            avg_step_succ = None
 
         recorrected_filename = get_recorrected_filename(jpath)
         recorrected_path = os.path.join(domain_path, recorrected_filename)
@@ -198,11 +209,16 @@ def process_domain(domain_slug, action_threshold=0.8, nl_threshold=0.8):
             "average_process_accuracy": avg_action_score,
             "average_outcome_accuracy": avg_nl_accuracy,
             "pass1": pass1,
-            "pass1_eff": pass1_eff
+            "avg_step_succ": avg_step_succ
         })
         
-    # Sort results by pass1_eff descending by default
-    results.sort(key=lambda x: x['pass1_eff'], reverse=True)
+    # Hierarchical ranking: higher pass1 first, then lower AvgStep_succ.
+    results.sort(
+        key=lambda x: (
+            -x['pass1'],
+            float('inf') if x.get('avg_step_succ') is None else x['avg_step_succ']
+        )
+    )
     return results
 
 def main():

@@ -4,19 +4,19 @@
       "model_name": "gpt-4.1-mini",
       "filename": "gpt-4.1-mini.json",
       "data_file": "gpt-4.1-mini_recorrected.json",
-      "average_process_accuracy": 0.6510528020732103,
-      "average_outcome_accuracy": 0.7163265306122449,
-      "pass1": 0.40816326530612246,
-      "pass1_eff": 0.3638454516005536
+      "average_process_accuracy": 0.7665024420024419,
+      "average_outcome_accuracy": 0.8083333333333332,
+      "pass1": 0.56,
+      "avg_step_succ": 15.071428571428571
     },
     {
       "model_name": "gpt-4.1-nano",
       "filename": "gpt-4.1-nano.json",
       "data_file": "gpt-4.1-nano_recorrected.json",
-      "average_process_accuracy": 0.5922983479105929,
-      "average_outcome_accuracy": 0.6530612244897961,
-      "pass1": 0.32653061224489793,
-      "pass1_eff": 0.29405444328913716
+      "average_process_accuracy": 0.7416159951159951,
+      "average_outcome_accuracy": 0.7333333333333333,
+      "pass1": 0.5,
+      "avg_step_succ": 15.56
     }
   ],
   "urban_satellite": [
@@ -24,10 +24,10 @@
       "model_name": "gpt-4.1-mini",
       "filename": "gpt-4.1-mini.json",
       "data_file": "gpt-4.1-mini_recorrected.json",
-      "average_process_accuracy": 0.9615055315055315,
-      "average_outcome_accuracy": 0.5155555555555555,
-      "pass1": 0.36666666666666664,
-      "pass1_eff": 0.3385714285714286
+      "average_process_accuracy": 0.8148544973544974,
+      "average_outcome_accuracy": 0.38333333333333336,
+      "pass1": 0.16666666666666666,
+      "avg_step_succ": 12.6
     }
   ]
 }
