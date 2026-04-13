@@ -10,6 +10,10 @@ export function formatToolResult(result, toolName) {
 
   // String (e.g., website content, error message)
   if (typeof result === 'string') {
+    if (toolName === 'get_satellite_tile') {
+      const filename = result.split('/').pop();
+      return { type: 'text', html: `<span style="font-family:monospace">${escapeHtml(filename)}</span>` };
+    }
     return formatText(result);
   }
 

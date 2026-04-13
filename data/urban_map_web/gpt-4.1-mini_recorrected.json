@@ -34002,7 +34002,7 @@
       "agent_cost": 0.008828800000000001,
       "user_cost": 0.0043132,
       "reward_info": {
-        "reward": 1.0,
+        "reward": 0.0,
         "db_check": null,
         "env_assertions": null,
         "action_checks": [
@@ -34094,8 +34094,8 @@
               "info": "Escalate if the booking cannot be completed exactly as requested.",
               "compare_args": null
             },
-            "action_match": true,
-            "action_reward": 1.0
+            "action_match": false,
+            "action_reward": 0.0
           }
         ],
         "nl_assertions": [
@@ -34830,7 +34830,7 @@
       ],
       "trial": 0,
       "seed": 626729,
-      "reward": 1.0
+      "reward": 0.0
     },
     {
       "id": "2448fa9d-379f-40c1-a0d9-d5b100efc41d",
@@ -37997,7 +37997,7 @@
       "agent_cost": 0.0076168,
       "user_cost": 0.0045276000000000005,
       "reward_info": {
-        "reward": 1.0,
+        "reward": 0.0,
         "db_check": null,
         "env_assertions": null,
         "action_checks": [
@@ -38101,8 +38101,8 @@
               "info": "Escalate only if needed after transit planning and comparison",
               "compare_args": null
             },
-            "action_match": true,
-            "action_reward": 1.0
+            "action_match": false,
+            "action_reward": 0.0
           }
         ],
         "nl_assertions": [
@@ -38826,7 +38826,7 @@
       ],
       "trial": 0,
       "seed": 626729,
-      "reward": 1.0
+      "reward": 0.0
     },
     {
       "id": "04fcc09f-d75c-4afb-b7ee-cb4d778aa556",
@@ -45475,8 +45475,8 @@
               "info": "Escalate only if policy details or schedule interpretation cannot be resolved.",
               "compare_args": null
             },
-            "action_match": true,
-            "action_reward": 1.0
+            "action_match": false,
+            "action_reward": 0.0
           }
         ],
         "nl_assertions": [

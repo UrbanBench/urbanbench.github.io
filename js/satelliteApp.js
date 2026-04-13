@@ -444,25 +444,39 @@ function buildTextBubble(turn, who) {
 // ── Satellite image helpers ───────────────────────────────────────────────────
 
 // Tool arguments that may contain an image path
-const IMAGE_ARG_KEYS = ['image_path', 'image_path_1', 'image_path_2'];
+// Tool arguments that may contain an image path
+const IMAGE_ARG_KEYS = ['image_path', 'image_path_1', 'image_path_2', 'image'];
 
 /**
- * Returns array of { key, filename, isPast } for any image arg found in args.
+ * Returns array of { key, filename, isPast } for any image found in args or results.
  */
-function extractImageArgs(args) {
-  if (!args || typeof args !== 'object') return [];
-  return IMAGE_ARG_KEYS
-    .filter(k => args[k] && typeof args[k] === 'string')
-    .map(k => {
+function extractImages(turn) {
+  const args = turn.args || {};
+  const images = [];
+
+  // Check arguments
+  for (const k of IMAGE_ARG_KEYS) {
+    if (args[k] && typeof args[k] === 'string') {
       const rawPath = args[k];
-      // Strip any absolute path prefix – keep only the basename (e.g. "19665_30150_past.png")
-      const basename = rawPath.split('/').pop();
-      return {
+      images.push({
         key: k,
-        filename: basename,
-        isPast: rawPath.includes('_past'),
-      };
+        filename: rawPath.split('/').pop(),
+        isPast: rawPath.includes('_past')
+      });
+    }
+  }
+
+  // Check result if it looks like an image path
+  const result = turn.resultRaw;
+  if (typeof result === 'string' && (result.endsWith('.png') || result.endsWith('.jpg') || result.endsWith('.jpeg'))) {
+    images.push({
+      key: 'result',
+      filename: result.split('/').pop(),
+      isPast: result.includes('_past')
     });
+  }
+
+  return images;
 }
 
 /**
@@ -470,7 +484,10 @@ function extractImageArgs(args) {
  * current images: assets/satellite_imgs/{basename}
  * past images:    assets/satellite_imgs_past/{basename}
  */
-function resolveImageUrl(filename, isPast) {
+function resolveImageUrl(filename, isPast, toolName) {
+  if (toolName === 'detect_infrastructure') {
+    return `./assets/satellite_imgs_zoom17/${filename}`;
+  }
   if (isPast) {
     return `./assets/satellite_imgs_past/${filename}`;
   }
@@ -480,7 +497,7 @@ function resolveImageUrl(filename, isPast) {
 /**
  * Build the satellite image preview section HTML element.
  */
-function buildImagePreviewSection(imageArgs, accentColor, borderColor) {
+function buildImagePreviewSection(imageArgs, accentColor, borderColor, toolName) {
   if (!imageArgs || imageArgs.length === 0) return null;
 
   const section = document.createElement('div');
@@ -511,7 +528,7 @@ function buildImagePreviewSection(imageArgs, accentColor, borderColor) {
     imgContainer.style.cssText = 'flex: 1; min-width: 200px; max-width: 400px;';
 
     const img = document.createElement('img');
-    img.src = resolveImageUrl(filename, isPast);
+    img.src = resolveImageUrl(filename, isPast, toolName);
     img.alt = `Satellite tile: ${filename}`;
     img.style.cssText = `
       width: 100%;
@@ -614,9 +631,9 @@ function buildToolCard(turn) {
   body.appendChild(argsSection);
 
   // ── Satellite image preview (between args and result) ─────────────────────
-  const imageArgs = extractImageArgs(turn.args);
-  if (imageArgs.length > 0) {
-    const imgSection = buildImagePreviewSection(imageArgs, meta.color, meta.border);
+  const images = extractImages(turn);
+  if (images.length > 0) {
+    const imgSection = buildImagePreviewSection(images, meta.color, meta.border, turn.toolName);
     if (imgSection) {
       body.appendChild(imgSection);
     }

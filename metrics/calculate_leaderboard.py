@@ -8,7 +8,21 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA_DIR = os.path.join(BASE_DIR, 'data')
 OUTPUT_DIR = os.path.join(DATA_DIR, 'leaderboard')
 
-BYPASS_ARGUMENTS = {"query", "description", "summary", "image_path"}
+BYPASS_ARGUMENTS = {"query", "description", "summary", "image_path", "image_path_1"}
+
+def get_agent_called_tools(messages):
+    called_tools = set()
+    for msg in messages:
+        if msg.get('role') == 'assistant':
+            tool_calls = msg.get('tool_calls', [])
+            if isinstance(tool_calls, list):
+                for tc in tool_calls:
+                    name = tc.get('name')
+                    if not name and tc.get('function'):
+                        name = tc['function'].get('name')
+                    if name:
+                        called_tools.add(name)
+    return called_tools
 
 def recorrect_simulation_actions(data):
     """
@@ -36,6 +50,8 @@ def recorrect_simulation_actions(data):
     for sim in simulations:
         # Use the task-specific action_id map for this simulation
         action_id_to_name = task_action_id_to_name.get(sim.get('task_id'), {})
+        
+        agent_called_tools = get_agent_called_tools(sim.get('messages', []))
 
         reward_info = sim.get('reward_info')
         if not isinstance(reward_info, dict):
@@ -56,10 +72,11 @@ def recorrect_simulation_actions(data):
             actual_name = action_obj.get('name')
             actual_args = action_obj.get('arguments', {})
             
-            # Rule: If name matches and contains bypassable args, it's a pass
+            # Rule: If name matches and contains bypassable args, and tool was actually called, it's a pass
             if actual_name == expected_name:
                 has_bypass_arg = any(arg in actual_args for arg in BYPASS_ARGUMENTS)
-                if has_bypass_arg:
+                tool_was_called = (actual_name in agent_called_tools)
+                if has_bypass_arg and tool_was_called:
                     if check.get('action_match') is not True:
                         check['action_match'] = True
                         check['action_reward'] = 1.0
